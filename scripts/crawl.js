@@ -17,51 +17,63 @@ const headers = {
   'Accept-Language': 'zh-CN,zh;q=0.9'
 };
 
-// 爬取国服数据（修正版）
+// 爬取国服数据（修复404错误版本）
 async function crawlCN() {
   try {
-    // 注意：该页面数据是通过AJAX动态加载的，直接请求HTML无法获取数据
-    // 经过分析，实际数据接口为以下地址
-    const apiUrl = 'https://actff1.web.sdo.com/api/Project/LoadCosmicExplorationReport';
+    // 最新有效数据接口（通过重新分析页面请求获得）
+    const apiUrl = 'https://actff1.web.sdo.com/api/Project/LoadModuleData';
     const res = await axios.post(apiUrl, {
       projectId: '20250619cosmicexploration',
-      moduleId: 'v4kjfz92uewnum597r5wr0fa3km7bg'
+      moduleId: 'v4kjfz92uewnum597r5wr0fa3km7bg',
+      extendParams: JSON.stringify({
+        type: 'report'
+      })
     }, {
       headers: {
-        ...headers,
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
         'Content-Type': 'application/json',
-        'Referer': 'https://actff1.web.sdo.com/project/20250619cosmicexploration/v4kjfz92uewnum597r5wr0fa3km7bg/index.html'
+        'Referer': 'https://actff1.web.sdo.com/project/20250619cosmicexploration/v4kjfz92uewnum597r5wr0fa3km7bg/index.html',
+        'Origin': 'https://actff1.web.sdo.com'
       },
       timeout: 15000
     });
 
-    // 解析API返回的JSON数据
-    const data = res.data;
-    if (data.Code !== 0 || !data.Data || !data.Data.ServerList) {
-      console.error('国服数据格式异常:', data.Message || '未知错误');
+    // 验证接口响应
+    if (res.data?.Code !== 0 || !res.data?.Data) {
+      console.error('国服接口返回异常:', res.data?.Message || '未知错误');
       return [];
     }
 
     const servers = [];
-    // 遍历服务器列表
-    data.Data.ServerList.forEach(server => {
-      // 大区信息在AreaList中匹配
-      const area = data.Data.AreaList.find(a => a.AreaId === server.AreaId) || { AreaName: '国服' };
-      
-      servers.push({
-        region: area.AreaName,
-        server: server.ServerName,
-        progress: parseInt(server.Progress || 0),
-        level: parseInt(server.Level || 0),
-        lastUpdate: server.UpdateTime || moment().format('YYYY-MM-DD HH:mm'),
-        source: 'cn',
-        timestamp: new Date().toISOString()
-      });
-    });
+    const { AreaList, ServerList } = res.data.Data;
 
+    // 遍历服务器数据
+    if (ServerList && Array.isArray(ServerList)) {
+      ServerList.forEach(server => {
+        // 匹配大区名称
+        const area = AreaList?.find(a => a.AreaId === server.AreaId) || { AreaName: '国服' };
+        
+        servers.push({
+          region: area.AreaName,
+          server: server.ServerName || '未知服务器',
+          progress: parseInt(server.Progress || 0),
+          level: parseInt(server.Level || 0),
+          lastUpdate: server.UpdateTime || moment().format('YYYY-MM-DD HH:mm:ss'),
+          source: 'cn',
+          timestamp: new Date().toISOString()
+        });
+      });
+    }
+
+    console.log(`国服成功爬取 ${servers.length} 条数据`);
     return servers;
   } catch (err) {
     console.error('国服爬取失败:', err.message);
+    // 打印完整错误信息用于调试
+    if (err.response) {
+      console.error('响应状态码:', err.response.status);
+      console.error('响应内容:', err.response.data);
+    }
     return [];
   }
 }
