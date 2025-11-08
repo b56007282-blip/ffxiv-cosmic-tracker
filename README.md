@@ -12,7 +12,7 @@
 
 ## 数据来源
 
-- 国服：[盛大游戏活动页](https://actff1.web.sdo.com/project/20250619cosmicexploration/...)
+- 国服：[盛大游戏活动页]([https://actff1.web.sdo.com/project/20250619cosmicexploration/...](https://actff1.web.sdo.com/project/20250619cosmicexploration/v4kjfz92uewnum597r5wr0fa3km7bg/index.html#/cosmic_exploration/report/)
 - 国际服：[Lodestone官方页](https://na.finalfantasyxiv.com/lodestone/cosmic_exploration/report/)
 
 ## 在线预览
