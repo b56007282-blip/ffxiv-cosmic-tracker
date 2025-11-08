@@ -1,0 +1,36 @@
+name: 爬取FFXIV宇宙探索数据
+on:
+  schedule:
+    - cron: '*/30 * * * *'  # 每30分钟执行一次
+  workflow_dispatch:  # 允许手动触发
+
+jobs:
+  crawl:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+      
+      - name: 设置Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: 安装依赖
+        run: |
+          cd scripts
+          npm init -y
+          npm install axios cheerio moment
+      
+      - name: 执行爬取脚本
+        run: |
+          cd scripts
+          node crawl.js
+      
+      - name: 提交数据更新
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add data/history/*.json
+          git commit -m "自动更新数据: $(date +'%Y-%m-%d %H:%M:%S')" || echo "无数据更新"
+          git push
