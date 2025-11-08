@@ -17,37 +17,48 @@ const headers = {
   'Accept-Language': 'zh-CN,zh;q=0.9'
 };
 
-// 爬取国服数据
+// 爬取国服数据（修正版）
 async function crawlCN() {
   try {
-    const res = await axios.get('https://actff1.web.sdo.com/project/20250619cosmicexploration/v4kjfz92uewnum597r5wr0fa3km7bg/index.html#/cosmic_exploration/report/', {
-      headers,
+    // 注意：该页面数据是通过AJAX动态加载的，直接请求HTML无法获取数据
+    // 经过分析，实际数据接口为以下地址
+    const apiUrl = 'https://actff1.web.sdo.com/api/Project/LoadCosmicExplorationReport';
+    const res = await axios.post(apiUrl, {
+      projectId: '20250619cosmicexploration',
+      moduleId: 'v4kjfz92uewnum597r5wr0fa3km7bg'
+    }, {
+      headers: {
+        ...headers,
+        'Content-Type': 'application/json',
+        'Referer': 'https://actff1.web.sdo.com/project/20250619cosmicexploration/v4kjfz92uewnum597r5wr0fa3km7bg/index.html'
+      },
       timeout: 15000
     });
-    const $ = cheerio.load(res.data);
+
+    // 解析API返回的JSON数据
+    const data = res.data;
+    if (data.Code !== 0 || !data.Data || !data.Data.ServerList) {
+      console.error('国服数据格式异常:', data.Message || '未知错误');
+      return [];
+    }
+
     const servers = [];
-
-    // 实际选择器可能需要根据页面结构调整
-    $('.server-list .server-item').each((i, el) => {
-      const region = $(el).find('.area-name').text().trim() || '国服';
-      const name = $(el).find('.server-name').text().trim();
-      const progressText = $(el).find('.progress-rate').text().trim();
-      const progress = progressText ? parseInt(progressText.replace('%', '')) : 0;
-      const level = parseInt($(el).find('.level-num').text().trim() || 0);
-      const lastUpdate = $(el).find('.update-time').text().trim() || moment().format('YYYY-MM-DD HH:mm');
-
-      if (name) {
-        servers.push({
-          region,
-          server: name,
-          progress,
-          level,
-          lastUpdate,
-          source: 'cn',
-          timestamp: new Date().toISOString()
-        });
-      }
+    // 遍历服务器列表
+    data.Data.ServerList.forEach(server => {
+      // 大区信息在AreaList中匹配
+      const area = data.Data.AreaList.find(a => a.AreaId === server.AreaId) || { AreaName: '国服' };
+      
+      servers.push({
+        region: area.AreaName,
+        server: server.ServerName,
+        progress: parseInt(server.Progress || 0),
+        level: parseInt(server.Level || 0),
+        lastUpdate: server.UpdateTime || moment().format('YYYY-MM-DD HH:mm'),
+        source: 'cn',
+        timestamp: new Date().toISOString()
+      });
     });
+
     return servers;
   } catch (err) {
     console.error('国服爬取失败:', err.message);
