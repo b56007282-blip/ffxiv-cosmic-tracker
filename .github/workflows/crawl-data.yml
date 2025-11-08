@@ -26,6 +26,7 @@ jobs:
         run: |
           cd scripts
           node crawl.js
+          
 - name: 提交数据更新
   run: |
     git config --global user.name "GitHub Actions"
