@@ -123,9 +123,9 @@ async function main() {
 
   if (allData.length > 0) {
     const timestamp = moment().format('YYYY-MM-DD-HH-mm');
-    const filePath = path.join(historyDir, `${timestamp}.json`);
+    const filePath = path.join(historyDir, `${timestamp}.json`); // 正确定义filePath变量
     fs.writeFileSync(filePath, JSON.stringify(allData, null, 2));
-    console.log(`成功保存 ${allData.length} 条数据至 ${filePath}`);
+    console.log(`成功保存 ${allData.length} 条数据至 ${filePath}`); // 这里使用filePath是正确的
   } else {
     console.log('未获取到任何有效数据');
   }
