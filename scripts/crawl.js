@@ -116,6 +116,12 @@ async function crawlNA() {
   }
 }
 
+main();
+
+// 在保存文件后添加
+console.log(`文件已保存到: ${filePath}`);
+console.log(`文件内容: ${JSON.stringify(allData.slice(0, 1), null, 2)}`);
+
 // 主函数
 async function main() {
   const [cnData, naData] = await Promise.all([crawlCN(), crawlNA()]);
@@ -123,15 +129,17 @@ async function main() {
 
   if (allData.length > 0) {
     const timestamp = moment().format('YYYY-MM-DD-HH-mm');
-    const filePath = path.join(historyDir, `${timestamp}.json`); // 正确定义filePath变量
+    // 关键：正确定义 filePath 变量
+    const filePath = path.join(historyDir, `${timestamp}.json`);
     fs.writeFileSync(filePath, JSON.stringify(allData, null, 2));
-    console.log(`成功保存 ${allData.length} 条数据至 ${filePath}`); // 这里使用filePath是正确的
+    // 确保日志中使用的变量名与定义一致
+    console.log(`成功保存 ${allData.length} 条数据至 ${filePath}`);
   } else {
     console.log('未获取到任何有效数据');
   }
 }
 
+// 执行主函数
 main();
-// 在保存文件后添加
-console.log(`文件已保存到: ${filePath}`);
-console.log(`文件内容: ${JSON.stringify(allData.slice(0, 1), null, 2)}`);
+
+
