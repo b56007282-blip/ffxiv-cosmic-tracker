@@ -17,51 +17,77 @@ const headers = {
   'Accept-Language': 'zh-CN,zh;q=0.9'
 };
 
-// 爬取国服数据
+// 爬取国服数据（最新修复版）
 async function crawlCN() {
   try {
+    // 重新验证的有效接口（2025年11月最新）
     const apiUrl = 'https://actff1.web.sdo.com/api/Project/LoadModuleData';
-    const res = await axios.post(apiUrl, {
+    
+    // 构造正确的请求参数（关键修复点）
+    const postData = {
       projectId: '20250619cosmicexploration',
       moduleId: 'v4kjfz92uewnum597r5wr0fa3km7bg',
-      extendParams: JSON.stringify({ type: 'report' })
-    }, {
-      headers: {
-        ...headers,
-        'Content-Type': 'application/json',
-        'Referer': 'https://actff1.web.sdo.com/project/20250619cosmicexploration/v4kjfz92uewnum597r5wr0fa3km7bg/index.html',
-        'Origin': 'https://actff1.web.sdo.com'
-      },
+      extendParams: JSON.stringify({
+        type: 'report',
+        t: new Date().getTime() // 添加时间戳避免缓存
+      })
+    };
+
+    // 完善请求头
+    const requestHeaders = {
+      ...headers,
+      'Content-Type': 'application/json',
+      'Referer': 'https://actff1.web.sdo.com/project/20250619cosmicexploration/v4kjfz92uewnum597r5wr0fa3km7bg/index.html',
+      'Origin': 'https://actff1.web.sdo.com',
+      'X-Requested-With': 'XMLHttpRequest' // 模拟AJAX请求
+    };
+
+    const res = await axios.post(apiUrl, postData, {
+      headers: requestHeaders,
       timeout: 15000
     });
 
-    if (res.data?.Code !== 0 || !res.data?.Data) {
-      console.error('国服接口返回异常:', res.data?.Message || '未知错误');
+    // 详细的响应验证
+    if (!res.data) {
+      console.error('国服接口无返回数据');
+      return [];
+    }
+    if (res.data.Code !== 0) {
+      console.error('国服接口返回错误:', `Code=${res.data.Code}, Message=${res.data.Message}`);
+      return [];
+    }
+    if (!res.data.Data || !res.data.Data.ServerList) {
+      console.error('国服数据格式错误:', '未找到ServerList');
       return [];
     }
 
+    // 解析服务器数据
     const servers = [];
     const { AreaList, ServerList } = res.data.Data;
 
-    if (ServerList && Array.isArray(ServerList)) {
-      ServerList.forEach(server => {
-        const area = AreaList?.find(a => a.AreaId === server.AreaId) || { AreaName: '国服' };
-        servers.push({
-          region: area.AreaName,
-          server: server.ServerName || '未知服务器',
-          progress: parseInt(server.Progress || 0),
-          level: parseInt(server.Level || 0),
-          lastUpdate: server.UpdateTime || moment().format('YYYY-MM-DD HH:mm:ss'),
-          source: 'cn',
-          timestamp: new Date().toISOString()
-        });
+    ServerList.forEach(server => {
+      const area = AreaList?.find(a => a.AreaId === server.AreaId) || { AreaName: '国服' };
+      servers.push({
+        region: area.AreaName,
+        server: server.ServerName || '未知服务器',
+        progress: parseInt(server.Progress || 0),
+        level: parseInt(server.Level || 0),
+        lastUpdate: server.UpdateTime || moment().format('YYYY-MM-DD HH:mm:ss'),
+        source: 'cn',
+        timestamp: new Date().toISOString()
       });
-    }
+    });
 
     console.log(`国服成功爬取 ${servers.length} 条数据`);
     return servers;
   } catch (err) {
     console.error('国服爬取失败:', err.message);
+    // 输出完整错误信息用于调试
+    if (err.response) {
+      console.error('响应状态码:', err.response.status);
+      console.error('响应头:', err.response.headers);
+      console.error('响应体:', err.response.data);
+    }
     return [];
   }
 }
