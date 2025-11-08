@@ -6,11 +6,29 @@ const moment = require('moment');
 
 // 确保数据目录存在
 const historyDir = path.join(__dirname, '../data/history');
+const progressChangesPath = path.join(__dirname, '../data/progress_changes.json'); // 新增：progress_changes存储路径
 if (!fs.existsSync(historyDir)) {
   fs.mkdirSync(historyDir, { recursive: true });
 }
 
-// 请求头配置（保持不变）
+// 新增：清空progress_changes数据的函数
+function clearProgressChanges() {
+  try {
+    // 写入空数组清空文件
+    fs.writeFileSync(progressChangesPath, '[]', 'utf8');
+    console.log('✅ 已清空progress_changes数据');
+  } catch (err) {
+    // 若文件不存在则创建空文件
+    if (err.code === 'ENOENT') {
+      fs.writeFileSync(progressChangesPath, '[]', 'utf8');
+      console.log('✅ 已创建并清空progress_changes文件');
+    } else {
+      console.error('❌ 清空progress_changes失败:', err.message);
+    }
+  }
+}
+
+// 请求头配置
 const headers = {
   'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
   'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
@@ -18,13 +36,10 @@ const headers = {
 };
 
 // 爬取国服数据（最新接口适配版）
-// 爬取国服数据（最新接口适配版）
 async function crawlCN() {
   try {
-    // 最新有效接口（根据抓包结果）
     const apiUrl = 'https://ff14act.web.sdo.com/api/cosmicData/getCosmicData';
     
-    // 构造请求头（完全模拟浏览器请求）
     const requestHeaders = {
       'Accept': 'application/json, text/plain, */*',
       'Accept-Encoding': 'gzip, deflate, br, zstd',
@@ -40,21 +55,19 @@ async function crawlCN() {
       'X-Requested-With': 'XMLHttpRequest'
     };
 
-    // 发送GET请求并添加时间戳避免缓存
     const res = await axios.get(apiUrl, {
       headers: requestHeaders,
       timeout: 15000,
       params: {
-        t: new Date().getTime() // 时间戳参数防止304缓存
+        t: new Date().getTime()
       }
     });
 
-    // 验证接口响应
     if (!res.data) {
       console.error('国服接口无返回数据');
       return [];
     }
-    if (res.data.code !== 10000) { // 接口成功状态码为10000
+    if (res.data.code !== 10000) {
       console.error('国服接口返回错误:', `Code=${res.data.code}, Message=${res.data.msg}`);
       return [];
     }
@@ -63,15 +76,21 @@ async function crawlCN() {
       return [];
     }
 
-    // 解析服务器数据（根据实际返回字段映射）
+    // 修正：国服进度改为8等份计算（与国际服统一）
     const servers = [];
     res.data.data.forEach(item => {
+      // 假设接口返回的ProgressRate对应gauge等级（1-8），转换为8等份百分比
+      const gaugeLevel = parseInt(item.ProgressRate || 0);
+      const progress = gaugeLevel > 0 
+        ? Math.round((gaugeLevel / 8) * 100 * 10) / 10 
+        : 0;
+
       servers.push({
-        region: item.area_name || '国服', // 大区名称（如"陆行鸟"、"莫古力"）
-        server: item.group_name || '未知服务器', // 服务器名称（如"拉诺西亚"、"神拳痕"）
-        progress: Math.min(Math.round(item.ProgressRate / 10), 100), // 进度率转换为百分比（ProgressRate/10）
-        level: parseInt(item.DevelopmentGrade || 0), // 开发等级（对应原level字段）
-        lastUpdate: item.data_time || moment().format('YYYY-MM-DD HH:mm:ss'), // 数据更新时间
+        region: item.area_name || '国服',
+        server: item.group_name || '未知服务器',
+        progress: Math.min(progress, 100), // 确保不超过100%
+        level: parseInt(item.DevelopmentGrade || 0),
+        lastUpdate: item.data_time || moment().format('YYYY-MM-DD HH:mm:ss'),
         source: 'cn',
         timestamp: new Date().toISOString()
       });
@@ -81,7 +100,6 @@ async function crawlCN() {
     return servers;
   } catch (err) {
     console.error('国服爬取失败:', err.message);
-    // 输出详细错误信息用于调试
     if (err.response) {
       console.error('响应状态码:', err.response.status);
       console.error('响应体:', err.response.data);
@@ -113,17 +131,14 @@ async function crawlNA() {
     const $ = cheerio.load(res.data);
     const servers = [];
 
-    // 遍历所有服务器卡片
     $('.cosmic__report__card').each((i, el) => {
-      // 提取服务器名称
       const serverName = $(el).find('.cosmic__report__card__name p').text().trim();
       if (!serverName) return;
 
-      // 提取进度状态（8等份计算）
       let progress = 0;
       const isCompleted = $(el).hasClass('completed');
       if (isCompleted) {
-        progress = 100; // 已完成服务器进度为100%
+        progress = 100;
       } else {
         const progressBar = $(el).find('.cosmic__report__status__progress__bar');
         const gaugeClass = progressBar.attr('class') || '';
@@ -131,18 +146,15 @@ async function crawlNA() {
         
         if (gaugeMatch) {
           const gaugeLevel = parseInt(gaugeMatch[1], 10);
-          progress = Math.round((gaugeLevel / 8) * 100 * 10) / 10; // 保留一位小数
+          progress = Math.round((gaugeLevel / 8) * 100 * 10) / 10;
         }
       }
 
-      // 提取等级（直接从网页获取）
       const levelText = $(el).find('.cosmic__report__grade__level p').text().trim();
       const level = parseInt(levelText || 0);
 
-      // 提取数据中心
       const dcTitle = $(el).closest('.cosmic__report__dc').find('.cosmic__report__dc__title').text().trim();
 
-      // 根据dc映射region（核心修正）
       let region;
       const naDCs = ['Aether', 'Crystal', 'Dynamis', 'Primal'];
       const euDCs = ['Chaos', 'Light'];
@@ -158,7 +170,7 @@ async function crawlNA() {
       } else if (jpDCs.includes(dcTitle)) {
         region = '国际服-日本';
       } else {
-        region = '国际服-未知区域'; // 兼容异常情况
+        region = '国际服-未知区域';
       }
 
       servers.push({
@@ -167,7 +179,6 @@ async function crawlNA() {
         dc: dcTitle,
         progress,
         level,
-        // 移除status字段（需求1）
         lastUpdate: moment().format('YYYY-MM-DD HH:mm:ss'),
         source: 'na',
         timestamp: new Date().toISOString()
@@ -182,72 +193,76 @@ async function crawlNA() {
   }
 }
 
-// 新增：获取上一次的历史数据
+// 获取上一次的历史数据
 function getLastHistoryData() {
   try {
-    // 读取history目录下所有JSON文件
     const files = fs.readdirSync(historyDir)
       .filter(file => file.endsWith('.json'))
       .map(file => ({
         name: file,
-        time: new Date(file.replace('.json', '').replace(/-/g, ' ')) // 解析文件名中的时间
+        time: new Date(file.replace('.json', '').replace(/-/g, ' '))
       }))
-      .sort((a, b) => b.time - a.time); // 按时间倒序排序
+      .sort((a, b) => b.time - a.time);
 
-    // 如果有历史文件，读取最新的一个
     if (files.length > 0) {
       const lastFile = files[0].name;
       const lastFilePath = path.join(historyDir, lastFile);
       const lastData = JSON.parse(fs.readFileSync(lastFilePath, 'utf8'));
-      // 过滤掉可能的元数据（只保留服务器数据）
-      return Array.isArray(lastData) ? lastData : [];
+      // 过滤掉progress_changes元数据，只保留服务器数据
+      return Array.isArray(lastData) ? lastData.filter(item => item.source) : [];
     }
   } catch (err) {
     console.error('读取历史数据失败:', err.message);
   }
-  return []; // 无历史数据时返回空数组
+  return [];
 }
 
-// 主函数（修改部分）
+// 主函数（核心修改）
 async function main() {
+  // 关键：生成新文件前先清空progress_changes
+  clearProgressChanges();
+
   const [cnData, naData] = await Promise.all([crawlCN(), crawlNA()]);
   const currentData = [...cnData, ...naData];
 
   if (currentData.length > 0) {
-    // 1. 获取上一次的历史数据
     const lastData = getLastHistoryData();
 
-    // 2. 对比当前数据与上一次数据，找出进度变化的服务器
+    // 生成当前周期的progress_changes（仅包含本次变化）
     const progressChanges = [];
     currentData.forEach(current => {
-      // 匹配上一次数据中相同的服务器（region + server 唯一标识）
       const last = lastData.find(item => 
         item.region === current.region && item.server === current.server
       );
-      // 若存在历史记录且进度不同，记录变化
       if (last && last.progress !== current.progress) {
-        progressChanges.push(`${current.region}-${current.server}`);
+        progressChanges.push({
+          server: `${current.region}-${current.server}`,
+          oldProgress: last.progress,
+          newProgress: current.progress,
+          changeTime: new Date().toISOString()
+        });
       }
     });
 
-    // 3. 构造最终数据：头部添加变化记录，后续跟完整服务器数据
+    // 保存本次progress_changes到独立文件
+    fs.writeFileSync(progressChangesPath, JSON.stringify(progressChanges, null, 2));
+
+    // 构造最终数据（包含本次变化记录）
     const finalData = [
       { 
         type: 'progress_changes', 
         count: progressChanges.length,
-        servers: progressChanges,
         timestamp: new Date().toISOString()
       },
-      ...currentData // 完整服务器数据
+      ...currentData
     ];
 
-    // 4. 保存文件
     const timestamp = moment().format('YYYY-MM-DD-HH-mm');
     const filePath = path.join(historyDir, `${timestamp}.json`);
     fs.writeFileSync(filePath, JSON.stringify(finalData, null, 2));
     console.log(`成功保存 ${currentData.length} 条数据至 ${filePath}`);
     if (progressChanges.length > 0) {
-      console.log(`进度有变化的服务器: ${progressChanges.join(', ')}`);
+      console.log(`进度有变化的服务器: ${progressChanges.map(c => c.server).join(', ')}`);
     } else {
       console.log('无服务器进度变化');
     }
