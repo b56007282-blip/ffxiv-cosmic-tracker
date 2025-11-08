@@ -109,9 +109,6 @@ async function crawlNA() {
       return [];
     }
 
-    // 临时保存页面HTML用于调试（需时开启）
-    // fs.writeFileSync('na_lodestone.html', res.data, 'utf8');
-
     const $ = cheerio.load(res.data);
     const servers = [];
 
@@ -120,32 +117,18 @@ async function crawlNA() {
       if (!serverName) return;
 
       let progress = 0;
-      // 核心修复：移除"已完成"类名判断，仅通过进度条等级计算
-      const progressBar = $(el).find('.cosmic__report__status__progress__bar');
-      
-      if (progressBar.length > 0) {
+      const isCompleted = $(el).hasClass('completed');
+      if (isCompleted) {
+        progress = 100;
+      } else {
+        const progressBar = $(el).find('.cosmic__report__status__progress__bar');
         const gaugeClass = progressBar.attr('class') || '';
         const gaugeMatch = gaugeClass.match(/gauge-(\d+)/);
         
         if (gaugeMatch) {
           const gaugeLevel = parseInt(gaugeMatch[1], 10);
-          // 进度条共8级，满级（8）即为当前等级100%
           progress = Math.round((gaugeLevel / 8) * 100 * 10) / 10;
-        } else {
-          // 从进度文本提取百分比（如"100%"）
-          const progressText = $(el).find('.cosmic__report__status__text').text().trim();
-          const textMatch = progressText.match(/(\d+)%/);
-          if (textMatch) {
-            progress = parseInt(textMatch[1], 10);
-          }
         }
-      } else {
-        console.debug(`服务器 ${serverName} 未找到进度条，进度设为0`);
-      }
-
-      // 针对Ravana的调试输出
-      if (serverName === 'Ravana') {
-        console.debug(`Ravana 进度计算: gaugeClass="${progressBar.attr('class')}", progress=${progress}`);
       }
 
       const levelText = $(el).find('.cosmic__report__grade__level p').text().trim();
@@ -171,10 +154,9 @@ async function crawlNA() {
         dc: dcTitle,
         progress,
         level,
-        lastUpdate: moment().tz('Asia/Shanghai').format('YYYY-MM-DD HH:mm:ss'),
+        lastUpdate: moment().format('YYYY-MM-DD HH:mm:ss'),
         source: 'na',
-        timestamp: new Date().toISOString(),
-        gmt8Timestamp: moment().tz('Asia/Shanghai').format('YYYY-MM-DD HH:mm:ss')
+        timestamp: new Date().toISOString()
       });
     });
 
