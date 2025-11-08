@@ -38,8 +38,10 @@ const headers = {
 // 爬取国服数据（最新接口适配版）
 async function crawlCN() {
   try {
+    // 最新有效接口（根据抓包结果）
     const apiUrl = 'https://ff14act.web.sdo.com/api/cosmicData/getCosmicData';
     
+    // 构造请求头（完全模拟浏览器请求）
     const requestHeaders = {
       'Accept': 'application/json, text/plain, */*',
       'Accept-Encoding': 'gzip, deflate, br, zstd',
@@ -55,19 +57,21 @@ async function crawlCN() {
       'X-Requested-With': 'XMLHttpRequest'
     };
 
+    // 发送GET请求并添加时间戳避免缓存
     const res = await axios.get(apiUrl, {
       headers: requestHeaders,
       timeout: 15000,
       params: {
-        t: new Date().getTime()
+        t: new Date().getTime() // 时间戳参数防止304缓存
       }
     });
 
+    // 验证接口响应
     if (!res.data) {
       console.error('国服接口无返回数据');
       return [];
     }
-    if (res.data.code !== 10000) {
+    if (res.data.code !== 10000) { // 接口成功状态码为10000
       console.error('国服接口返回错误:', `Code=${res.data.code}, Message=${res.data.msg}`);
       return [];
     }
@@ -76,21 +80,15 @@ async function crawlCN() {
       return [];
     }
 
-    // 修正：国服进度改为8等份计算（与国际服统一）
+    // 解析服务器数据（根据实际返回字段映射）
     const servers = [];
     res.data.data.forEach(item => {
-      // 假设接口返回的ProgressRate对应gauge等级（1-8），转换为8等份百分比
-      const gaugeLevel = parseInt(item.ProgressRate || 0);
-      const progress = gaugeLevel > 0 
-        ? Math.round((gaugeLevel / 8) * 100 * 10) / 10 
-        : 0;
-
       servers.push({
-        region: item.area_name || '国服',
-        server: item.group_name || '未知服务器',
-        progress: Math.min(progress, 100), // 确保不超过100%
-        level: parseInt(item.DevelopmentGrade || 0),
-        lastUpdate: item.data_time || moment().format('YYYY-MM-DD HH:mm:ss'),
+        region: item.area_name || '国服', // 大区名称（如"陆行鸟"、"莫古力"）
+        server: item.group_name || '未知服务器', // 服务器名称（如"拉诺西亚"、"神拳痕"）
+        progress: Math.min(Math.round(item.ProgressRate / 10), 100), // 进度率转换为百分比（ProgressRate/10）
+        level: parseInt(item.DevelopmentGrade || 0), // 开发等级（对应原level字段）
+        lastUpdate: item.data_time || moment().format('YYYY-MM-DD HH:mm:ss'), // 数据更新时间
         source: 'cn',
         timestamp: new Date().toISOString()
       });
@@ -100,6 +98,7 @@ async function crawlCN() {
     return servers;
   } catch (err) {
     console.error('国服爬取失败:', err.message);
+    // 输出详细错误信息用于调试
     if (err.response) {
       console.error('响应状态码:', err.response.status);
       console.error('响应体:', err.response.data);
