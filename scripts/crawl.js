@@ -18,110 +18,75 @@ const headers = {
 };
 
 // 爬取国服数据（最新接口适配版）
+// 爬取国服数据（最新接口适配版）
 async function crawlCN() {
   try {
-    // 国服实际URL（包含哈希路由）
-    const url = 'https://actff1.web.sdo.com/project/20250619cosmicexploration/v4kjfz92uewnum597r5wr0fa3km7bg/index.html#/cosmic_exploration/report/';
+    // 最新有效接口（根据抓包结果）
+    const apiUrl = 'https://ff14act.web.sdo.com/api/cosmicData/getCosmicData';
     
-    const headers = {
-      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36',
-      'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
-      'Accept-Language': 'zh-CN,zh;q=0.9',
+    // 构造请求头（完全模拟浏览器请求）
+    const requestHeaders = {
+      'Accept': 'application/json, text/plain, */*',
+      'Accept-Encoding': 'gzip, deflate, br, zstd',
+      'Accept-Language': 'zh-TW,zh;q=0.9,en-US;q=0.8,en;q=0.7',
+      'Connection': 'keep-alive',
+      'Host': 'ff14act.web.sdo.com',
+      'Origin': 'https://actff1.web.sdo.com',
       'Referer': 'https://actff1.web.sdo.com/',
-      // 添加常见Cookie（从浏览器复制实际Cookie替换）
-      'Cookie': 'Hm_lvt_xxx=xxx; Hm_lpvt_xxx=xxx; SESSIONID=xxx'
+      'Sec-Fetch-Dest': 'empty',
+      'Sec-Fetch-Mode': 'cors',
+      'Sec-Fetch-Site': 'same-site',
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36',
+      'X-Requested-With': 'XMLHttpRequest'
     };
 
-    // 关键修复：处理哈希路由页面，可能需要禁用默认的哈希解析
-    const res = await axios.get(url, { 
-      headers, 
-      timeout: 20000,
-      maxRedirects: 0, // 禁止自动重定向，避免路由跳转丢失数据
-      transformResponse: [data => data] // 保留原始HTML不解析
+    // 发送GET请求并添加时间戳避免缓存
+    const res = await axios.get(apiUrl, {
+      headers: requestHeaders,
+      timeout: 15000,
+      params: {
+        t: new Date().getTime() // 时间戳参数防止304缓存
+      }
     });
 
+    // 验证接口响应
     if (!res.data) {
-      console.error('国服无响应数据');
+      console.error('国服接口无返回数据');
+      return [];
+    }
+    if (res.data.code !== 10000) { // 接口成功状态码为10000
+      console.error('国服接口返回错误:', `Code=${res.data.code}, Message=${res.data.msg}`);
+      return [];
+    }
+    if (!Array.isArray(res.data.data) || res.data.data.length === 0) {
+      console.error('国服数据格式错误: 数据列表为空或不是数组');
       return [];
     }
 
-    // 调试：保存页面HTML到本地分析（临时开启）
-    // const fs = require('fs');
-    // fs.writeFileSync('cn_actual_page.html', res.data);
-
-    const $ = cheerio.load(res.data);
+    // 解析服务器数据（根据实际返回字段映射）
     const servers = [];
-
-    // 核心修复：根据实际页面结构调整选择器层级
-    // 从HTML看，数据中心容器可能在.tab-content或直接在#app下
-    const dcContainers = $('#app .cosmic__report__dc, .tab-content .cosmic__report__dc');
-    if (dcContainers.length === 0) {
-      console.error('未找到任何数据中心容器，可能页面结构或Cookie错误');
-      return [];
-    }
-
-    dcContainers.each((dcIndex, dcEl) => {
-      const dcTitle = $(dcEl).find('.cosmic__report__dc__title').text().trim() || '未知数据中心';
-      
-      // 服务器列表容器可能带有show类（如.cosmic__report__world.show）
-      const worldContainer = $(dcEl).find('.cosmic__report__world.show, .cosmic__report__world');
-      if (worldContainer.length === 0) {
-        console.debug(`数据中心${dcTitle}未找到服务器列表容器`);
-        return;
-      }
-
-      // 提取所有服务器卡片（包含特殊完成卡片）
-      worldContainer.find('.cosmic__report__card').each((cardIndex, cardEl) => {
-        const serverName = $(cardEl).find('.cosmic__report__card__name p').text().trim();
-        if (!serverName) {
-          console.debug(`数据中心${dcTitle}存在无名称卡片，跳过`);
-          return;
-        }
-
-        // 进度计算（8等份）
-        let progress = 0;
-        const isCompleted = $(cardEl).hasClass('completed');
-        if (isCompleted) {
-          progress = 100;
-        } else {
-          const progressBar = $(cardEl).find('.cosmic__report__status__progress__bar');
-          const gaugeClass = progressBar.attr('class') || '';
-          const gaugeMatch = gaugeClass.match(/gauge-(\d+)/);
-          
-          if (gaugeMatch) {
-            const gaugeLevel = parseInt(gaugeMatch[1], 10);
-            progress = Math.round((gaugeLevel / 8) * 100 * 10) / 10;
-          }
-        }
-
-        // 提取等级
-        const levelText = $(cardEl).find('.cosmic__report__grade__level p').text().trim();
-        const level = parseInt(levelText || 0);
-
-        servers.push({
-          region: '国服',
-          server: serverName,
-          dc: dcTitle,
-          progress,
-          level,
-          lastUpdate: moment().format('YYYY-MM-DD HH:mm:ss'),
-          source: 'cn',
-          timestamp: new Date().toISOString()
-        });
+    res.data.data.forEach(item => {
+      servers.push({
+        region: item.area_name || '国服', // 大区名称（如"陆行鸟"、"莫古力"）
+        server: item.group_name || '未知服务器', // 服务器名称（如"拉诺西亚"、"神拳痕"）
+        progress: Math.min(Math.round(item.ProgressRate / 10), 100), // 进度率转换为百分比（ProgressRate/10）
+        level: parseInt(item.DevelopmentGrade || 0), // 开发等级（对应原level字段）
+        lastUpdate: item.data_time || moment().format('YYYY-MM-DD HH:mm:ss'), // 数据更新时间
+        source: 'cn',
+        timestamp: new Date().toISOString()
       });
     });
 
-    if (servers.length === 0) {
-      console.error('爬取0条数据，最终排查：');
-      console.error('1. 请替换headers中的Cookie为浏览器实际登录Cookie');
-      console.error('2. 确认页面是否需要先登录（手动访问URL检查）');
-      console.error('3. 检查保存的cn_actual_page.html是否包含服务器数据');
-    } else {
-      console.log(`国服成功爬取 ${servers.length} 条数据`);
-    }
+    console.log(`国服成功爬取 ${servers.length} 条数据`);
     return servers;
   } catch (err) {
     console.error('国服爬取失败:', err.message);
+    // 输出详细错误信息用于调试
+    if (err.response) {
+      console.error('响应状态码:', err.response.status);
+      console.error('响应体:', err.response.data);
+      console.error('响应头:', err.response.headers);
+    }
     return [];
   }
 }
