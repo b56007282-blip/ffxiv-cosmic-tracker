@@ -10,7 +10,7 @@ if (!fs.existsSync(historyDir)) {
   fs.mkdirSync(historyDir, { recursive: true });
 }
 
-// 请求头配置
+// 请求头配置（保持不变）
 const headers = {
   'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
   'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
@@ -160,18 +160,75 @@ async function crawlNA() {
   }
 }
 
-// 主函数
+// 新增：获取上一次的历史数据
+function getLastHistoryData() {
+  try {
+    // 读取history目录下所有JSON文件
+    const files = fs.readdirSync(historyDir)
+      .filter(file => file.endsWith('.json'))
+      .map(file => ({
+        name: file,
+        time: new Date(file.replace('.json', '').replace(/-/g, ' ')) // 解析文件名中的时间
+      }))
+      .sort((a, b) => b.time - a.time); // 按时间倒序排序
+
+    // 如果有历史文件，读取最新的一个
+    if (files.length > 0) {
+      const lastFile = files[0].name;
+      const lastFilePath = path.join(historyDir, lastFile);
+      const lastData = JSON.parse(fs.readFileSync(lastFilePath, 'utf8'));
+      // 过滤掉可能的元数据（只保留服务器数据）
+      return Array.isArray(lastData) ? lastData : [];
+    }
+  } catch (err) {
+    console.error('读取历史数据失败:', err.message);
+  }
+  return []; // 无历史数据时返回空数组
+}
+
+// 主函数（修改部分）
 async function main() {
   const [cnData, naData] = await Promise.all([crawlCN(), crawlNA()]);
-  const allData = [...cnData, ...naData];
+  const currentData = [...cnData, ...naData];
 
-  if (allData.length > 0) {
-    // 明确定义filePath变量
+  if (currentData.length > 0) {
+    // 1. 获取上一次的历史数据
+    const lastData = getLastHistoryData();
+
+    // 2. 对比当前数据与上一次数据，找出进度变化的服务器
+    const progressChanges = [];
+    currentData.forEach(current => {
+      // 匹配上一次数据中相同的服务器（region + server 唯一标识）
+      const last = lastData.find(item => 
+        item.region === current.region && item.server === current.server
+      );
+      // 若存在历史记录且进度不同，记录变化
+      if (last && last.progress !== current.progress) {
+        progressChanges.push(`${current.region}-${current.server}`);
+      }
+    });
+
+    // 3. 构造最终数据：头部添加变化记录，后续跟完整服务器数据
+    const finalData = [
+      { 
+        type: 'progress_changes', 
+        count: progressChanges.length,
+        servers: progressChanges,
+        timestamp: new Date().toISOString()
+      },
+      ...currentData // 完整服务器数据
+    ];
+
+    // 4. 保存文件
     const timestamp = moment().format('YYYY-MM-DD-HH-mm');
     const filePath = path.join(historyDir, `${timestamp}.json`);
-    fs.writeFileSync(filePath, JSON.stringify(allData, null, 2));
-    // 这里使用的变量名与定义完全一致
-    console.log(`成功保存 ${allData.length} 条数据至 ${filePath}`);
+    fs.writeFileSync(filePath, JSON.stringify(finalData, null, 2));
+    console.log(`成功保存 ${currentData.length} 条数据至 ${filePath}`);
+    if (progressChanges.length > 0) {
+      console.log(`进度有变化的服务器: ${progressChanges.join(', ')}`);
+    } else {
+      console.log('无服务器进度变化');
+    }
   } else {
     console.log('未获取到任何有效数据');
   }
