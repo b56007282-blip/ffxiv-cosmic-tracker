@@ -17,62 +17,60 @@ const headers = {
   'Accept-Language': 'zh-CN,zh;q=0.9'
 };
 
-// 爬取国服数据（最新修复版）
+// 爬取国服数据（最新接口适配版）
 async function crawlCN() {
   try {
-    // 重新验证的有效接口（2025年11月最新）
-    const apiUrl = 'https://actff1.web.sdo.com/api/Project/LoadModuleData';
+    // 最新有效接口（根据抓包结果）
+    const apiUrl = 'https://ff14act.web.sdo.com/api/cosmicData/getCosmicData';
     
-    // 构造正确的请求参数（关键修复点）
-    const postData = {
-      projectId: '20250619cosmicexploration',
-      moduleId: 'v4kjfz92uewnum597r5wr0fa3km7bg',
-      extendParams: JSON.stringify({
-        type: 'report',
-        t: new Date().getTime() // 添加时间戳避免缓存
-      })
-    };
-
-    // 完善请求头
+    // 构造请求头（完全模拟浏览器请求）
     const requestHeaders = {
-      ...headers,
-      'Content-Type': 'application/json',
-      'Referer': 'https://actff1.web.sdo.com/project/20250619cosmicexploration/v4kjfz92uewnum597r5wr0fa3km7bg/index.html',
+      'Accept': 'application/json, text/plain, */*',
+      'Accept-Encoding': 'gzip, deflate, br, zstd',
+      'Accept-Language': 'zh-TW,zh;q=0.9,en-US;q=0.8,en;q=0.7',
+      'Connection': 'keep-alive',
+      'Host': 'ff14act.web.sdo.com',
       'Origin': 'https://actff1.web.sdo.com',
-      'X-Requested-With': 'XMLHttpRequest' // 模拟AJAX请求
+      'Referer': 'https://actff1.web.sdo.com/',
+      'Sec-Fetch-Dest': 'empty',
+      'Sec-Fetch-Mode': 'cors',
+      'Sec-Fetch-Site': 'same-site',
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36',
+      'X-Requested-With': 'XMLHttpRequest'
     };
 
-    const res = await axios.post(apiUrl, postData, {
+    // 发送GET请求并添加时间戳避免缓存
+    const res = await axios.get(apiUrl, {
       headers: requestHeaders,
-      timeout: 15000
+      timeout: 15000,
+      params: {
+        t: new Date().getTime() // 时间戳参数防止304缓存
+      }
     });
 
-    // 详细的响应验证
+    // 验证接口响应
     if (!res.data) {
       console.error('国服接口无返回数据');
       return [];
     }
-    if (res.data.Code !== 0) {
-      console.error('国服接口返回错误:', `Code=${res.data.Code}, Message=${res.data.Message}`);
+    if (res.data.code !== 10000) { // 接口成功状态码为10000
+      console.error('国服接口返回错误:', `Code=${res.data.code}, Message=${res.data.msg}`);
       return [];
     }
-    if (!res.data.Data || !res.data.Data.ServerList) {
-      console.error('国服数据格式错误:', '未找到ServerList');
+    if (!Array.isArray(res.data.data) || res.data.data.length === 0) {
+      console.error('国服数据格式错误: 数据列表为空或不是数组');
       return [];
     }
 
-    // 解析服务器数据
+    // 解析服务器数据（根据实际返回字段映射）
     const servers = [];
-    const { AreaList, ServerList } = res.data.Data;
-
-    ServerList.forEach(server => {
-      const area = AreaList?.find(a => a.AreaId === server.AreaId) || { AreaName: '国服' };
+    res.data.data.forEach(item => {
       servers.push({
-        region: area.AreaName,
-        server: server.ServerName || '未知服务器',
-        progress: parseInt(server.Progress || 0),
-        level: parseInt(server.Level || 0),
-        lastUpdate: server.UpdateTime || moment().format('YYYY-MM-DD HH:mm:ss'),
+        region: item.area_name || '国服', // 大区名称（如"陆行鸟"、"莫古力"）
+        server: item.group_name || '未知服务器', // 服务器名称（如"拉诺西亚"、"神拳痕"）
+        progress: Math.min(Math.round(item.ProgressRate / 10), 100), // 进度率转换为百分比（ProgressRate/10）
+        level: parseInt(item.DevelopmentGrade || 0), // 开发等级（对应原level字段）
+        lastUpdate: item.data_time || moment().format('YYYY-MM-DD HH:mm:ss'), // 数据更新时间
         source: 'cn',
         timestamp: new Date().toISOString()
       });
@@ -82,11 +80,11 @@ async function crawlCN() {
     return servers;
   } catch (err) {
     console.error('国服爬取失败:', err.message);
-    // 输出完整错误信息用于调试
+    // 输出详细错误信息用于调试
     if (err.response) {
       console.error('响应状态码:', err.response.status);
-      console.error('响应头:', err.response.headers);
       console.error('响应体:', err.response.data);
+      console.error('响应头:', err.response.headers);
     }
     return [];
   }
