@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FFXIV 宇宙探索进度追踪</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <h1>FFXIV 宇宙探索进度追踪</h1>
+    <p>数据来源：国服与国际服官方网站 | 每30分钟自动更新</p>
+  </header>
+
+  <main>
+    <div class="filters">
+      <select id="region-filter">
+        <option value="all">所有大区</option>
+        <option value="国服">国服</option>
+        <option value="国际服">国际服</option>
+      </select>
+      <select id="server-filter">
+        <option value="all">所有服务器</option>
+      </select>
+    </div>
+
+    <div class="server-tabs"></div>
+
+    <div class="server-data">
+      <div class="current-status">
+        <h2>当前状态</h2>
+        <div class="status-card"></div>
+      </div>
+      <div class="history-chart">
+        <h2>历史进度</h2>
+        <canvas id="progress-chart"></canvas>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>数据仅供参考 | <a href="https://github.com/your-username/your-repo" target="_blank">项目源码</a></p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
