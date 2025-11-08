@@ -12,12 +12,12 @@
 
 ## 数据来源
 
-- 国服：[盛大游戏活动页]([https://actff1.web.sdo.com/project/20250619cosmicexploration/...](https://actff1.web.sdo.com/project/20250619cosmicexploration/v4kjfz92uewnum597r5wr0fa3km7bg/index.html#/cosmic_exploration/report/))
+- 国服：[盛大游戏活动页]((https://actff1.web.sdo.com/project/20250619cosmicexploration/v4kjfz92uewnum597r5wr0fa3km7bg/index.html#/cosmic_exploration/report/))
 - 国际服：[Lodestone官方页](https://na.finalfantasyxiv.com/lodestone/cosmic_exploration/report/)
 
 ## 在线预览
 
-访问 [GitHub Pages](https://your-username.github.io/your-repo-name) 查看最新数据。
+访问 [GitHub Pages](https://github.com/b56007282-blip/ffxiv-cosmic-tracker/tree/main) 查看最新数据。
 
 ## 使用说明
 
