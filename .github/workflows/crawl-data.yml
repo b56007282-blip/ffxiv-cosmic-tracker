@@ -7,12 +7,15 @@ on:
 jobs:
   crawl:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write  # 显式授予写入权限（关键修复）
     steps:
       - name: 检出代码
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # 拉取完整历史，确保能正常提交
-          persist-credentials: true  # 保留凭证，允许后续push操作
+          fetch-depth: 0
+          persist-credentials: true
+          ref: main  # 明确指定检出main分支
 
       - name: 设置Node.js
         uses: actions/setup-node@v4
@@ -21,37 +24,39 @@ jobs:
 
       - name: 安装依赖
         run: |
-          # 确保scripts目录存在
-          if [ ! -d "scripts" ]; then
-            mkdir -p scripts
-          fi
+          mkdir -p scripts
           npm init -y --prefix scripts
           npm install axios cheerio moment --prefix scripts
 
       - name: 执行爬取脚本
         run: |
-          node ./scripts/crawl.js  # 使用绝对路径执行脚本
+          node ./scripts/crawl.js
+          # 调试：打印生成的文件列表（确认文件是否真的生成）
+          echo "生成的数据文件："
+          ls -l data/history/ || echo "无文件生成"
 
       - name: 提交数据更新
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
           
-          # 确保数据目录存在
-          if [ ! -d "data/history" ]; then
-            mkdir -p data/history
-            touch data/history/.gitkeep
-            git add data/history/.gitkeep
-          fi
+          # 强制创建目录并确保权限
+          mkdir -p data/history
+          chmod -R 755 data/history
+          touch data/history/.gitkeep
           
-          # 添加所有数据文件（包括子目录）
-          git add data/history/**/*.json || true
+          # 显式添加所有文件（包括新创建的）
+          git add data/history/
           
-          # 检查是否有更新
+          # 调试：检查暂存区状态
+          echo "暂存区状态："
+          git status
+          
+          # 提交逻辑
           if git diff --cached --quiet; then
             echo "无数据更新，不提交"
           else
             git commit -m "自动更新数据: $(date +'%Y-%m-%d %H:%M:%S')"
-            # 明确推送至主分支（根据实际分支名修改，通常是main或master）
-            git push origin main
+            # 强制推送（解决可能的分支冲突）
+            git push origin main --force-with-lease
           fi
