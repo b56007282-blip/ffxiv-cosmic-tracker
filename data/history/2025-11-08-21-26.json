@@ -1,0 +1,1125 @@
+[
+  {
+    "type": "progress_changes",
+    "count": 14,
+    "changes": [
+      "豆豆柴-红茶川",
+      "莫古力-拂晓之间",
+      "莫古力-旅人栈桥",
+      "莫古力-白金幻象",
+      "陆行鸟-神意之地",
+      "豆豆柴-水晶塔",
+      "国际服-北美-Cuchulainn",
+      "国际服-北美-Golem",
+      "国际服-北美-Kraken",
+      "国际服-北美-Rafflesia",
+      "国际服-大洋洲-Bismarck",
+      "国际服-大洋洲-Ravana",
+      "国际服-大洋洲-Sophia",
+      "国际服-大洋洲-Zurvan"
+    ],
+    "timestamp": "2025-11-08T21:26:03.955Z"
+  },
+  {
+    "region": "豆豆柴",
+    "server": "红茶川",
+    "progress": 25,
+    "level": 124,
+    "lastUpdate": "2025-11-09 05:00:00",
+    "source": "cn",
+    "timestamp": "2025-11-08T21:26:03.953Z"
+  },
+  {
+    "region": "猫小胖",
+    "server": "静语庄园",
+    "progress": 100,
+    "level": 131,
+    "lastUpdate": "2025-11-09 05:00:00",
+    "source": "cn",
+    "timestamp": "2025-11-08T21:26:03.953Z"
+  },
+  {
+    "region": "猫小胖",
+    "server": "延夏",
+    "progress": 37.5,
+    "level": 124,
+    "lastUpdate": "2025-11-09 05:00:00",
+    "source": "cn",
+    "timestamp": "2025-11-08T21:26:03.953Z"
+  },
+  {
+    "region": "猫小胖",
+    "server": "紫水栈桥",
+    "progress": 100,
+    "level": 131,
+    "lastUpdate": "2025-11-09 05:00:00",
+    "source": "cn",
+    "timestamp": "2025-11-08T21:26:03.953Z"
+  },
+  {
+    "region": "莫古力",
+    "server": "梦羽宝境",
+    "progress": 75,
+    "level": 124,
+    "lastUpdate": "2025-11-09 05:00:00",
+    "source": "cn",
+    "timestamp": "2025-11-08T21:26:03.953Z"
+  },
+  {
+    "region": "莫古力",
+    "server": "龙巢神殿",
+    "progress": 25,
+    "level": 124,
+    "lastUpdate": "2025-11-09 05:00:00",
+    "source": "cn",
+    "timestamp": "2025-11-08T21:26:03.953Z"
+  },
+  {
+    "region": "莫古力",
+    "server": "拂晓之间",
+    "progress": 12.5,
+    "level": 124,
+    "lastUpdate": "2025-11-09 05:00:00",
+    "source": "cn",
+    "timestamp": "2025-11-08T21:26:03.953Z"
+  },
+  {
+    "region": "莫古力",
+    "server": "旅人栈桥",
+    "progress": 0,
+    "level": 124,
+    "lastUpdate": "2025-11-09 05:00:00",
+    "source": "cn",
+    "timestamp": "2025-11-08T21:26:03.953Z"
+  },
+  {
+    "region": "莫古力",
+    "server": "白金幻象",
+    "progress": 37.5,
+    "level": 124,
+    "lastUpdate": "2025-11-09 05:00:00",
+    "source": "cn",
+    "timestamp": "2025-11-08T21:26:03.953Z"
+  },
+  {
+    "region": "莫古力",
+    "server": "白银乡",
+    "progress": 12.5,
+    "level": 124,
+    "lastUpdate": "2025-11-09 05:00:00",
+    "source": "cn",
+    "timestamp": "2025-11-08T21:26:03.953Z"
+  },
+  {
+    "region": "莫古力",
+    "server": "神拳痕",
+    "progress": 12.5,
+    "level": 124,
+    "lastUpdate": "2025-11-09 05:00:00",
+    "source": "cn",
+    "timestamp": "2025-11-08T21:26:03.953Z"
+  },
+  {
+    "region": "豆豆柴",
+    "server": "伊修加德",
+    "progress": 62.5,
+    "level": 124,
+    "lastUpdate": "2025-11-09 05:00:00",
+    "source": "cn",
+    "timestamp": "2025-11-08T21:26:03.953Z"
+  },
+  {
+    "region": "莫古力",
+    "server": "潮风亭",
+    "progress": 12.5,
+    "level": 124,
+    "lastUpdate": "2025-11-09 05:00:00",
+    "source": "cn",
+    "timestamp": "2025-11-08T21:26:03.953Z"
+  },
+  {
+    "region": "陆行鸟",
+    "server": "晨曦王座",
+    "progress": 100,
+    "level": 131,
+    "lastUpdate": "2025-11-09 05:00:00",
+    "source": "cn",
+    "timestamp": "2025-11-08T21:26:03.953Z"
+  },
+  {
+    "region": "陆行鸟",
+    "server": "沃仙曦染",
+    "progress": 100,
+    "level": 131,
+    "lastUpdate": "2025-11-09 05:00:00",
+    "source": "cn",
+    "timestamp": "2025-11-08T21:26:03.953Z"
+  },
+  {
+    "region": "陆行鸟",
+    "server": "宇宙和音",
+    "progress": 100,
+    "level": 131,
+    "lastUpdate": "2025-11-09 05:00:00",
+    "source": "cn",
+    "timestamp": "2025-11-08T21:26:03.953Z"
+  },
+  {
+    "region": "陆行鸟",
+    "server": "红玉海",
+    "progress": 50,
+    "level": 124,
+    "lastUpdate": "2025-11-09 05:00:00",
+    "source": "cn",
+    "timestamp": "2025-11-08T21:26:03.953Z"
+  },
+  {
+    "region": "陆行鸟",
+    "server": "萌芽池",
+    "progress": 100,
+    "level": 131,
+    "lastUpdate": "2025-11-09 05:00:00",
+    "source": "cn",
+    "timestamp": "2025-11-08T21:26:03.953Z"
+  },
+  {
+    "region": "陆行鸟",
+    "server": "神意之地",
+    "progress": 75,
+    "level": 127,
+    "lastUpdate": "2025-11-09 05:00:00",
+    "source": "cn",
+    "timestamp": "2025-11-08T21:26:03.953Z"
+  },
+  {
+    "region": "陆行鸟",
+    "server": "幻影群岛",
+    "progress": 87.5,
+    "level": 124,
+    "lastUpdate": "2025-11-09 05:00:00",
+    "source": "cn",
+    "timestamp": "2025-11-08T21:26:03.953Z"
+  },
+  {
+    "region": "陆行鸟",
+    "server": "拉诺西亚",
+    "progress": 100,
+    "level": 131,
+    "lastUpdate": "2025-11-09 05:00:00",
+    "source": "cn",
+    "timestamp": "2025-11-08T21:26:03.953Z"
+  },
+  {
+    "region": "豆豆柴",
+    "server": "太阳海岸",
+    "progress": 75,
+    "level": 124,
+    "lastUpdate": "2025-11-09 05:00:00",
+    "source": "cn",
+    "timestamp": "2025-11-08T21:26:03.953Z"
+  },
+  {
+    "region": "豆豆柴",
+    "server": "银泪湖",
+    "progress": 50,
+    "level": 124,
+    "lastUpdate": "2025-11-09 05:00:00",
+    "source": "cn",
+    "timestamp": "2025-11-08T21:26:03.953Z"
+  },
+  {
+    "region": "豆豆柴",
+    "server": "水晶塔",
+    "progress": 0,
+    "level": 124,
+    "lastUpdate": "2025-11-09 05:00:00",
+    "source": "cn",
+    "timestamp": "2025-11-08T21:26:03.953Z"
+  },
+  {
+    "region": "猫小胖",
+    "server": "琥珀原",
+    "progress": 37.5,
+    "level": 124,
+    "lastUpdate": "2025-11-09 05:00:00",
+    "source": "cn",
+    "timestamp": "2025-11-08T21:26:03.953Z"
+  },
+  {
+    "region": "猫小胖",
+    "server": "柔风海湾",
+    "progress": 87.5,
+    "level": 124,
+    "lastUpdate": "2025-11-09 05:00:00",
+    "source": "cn",
+    "timestamp": "2025-11-08T21:26:03.953Z"
+  },
+  {
+    "region": "猫小胖",
+    "server": "海猫茶屋",
+    "progress": 100,
+    "level": 131,
+    "lastUpdate": "2025-11-09 05:00:00",
+    "source": "cn",
+    "timestamp": "2025-11-08T21:26:03.953Z"
+  },
+  {
+    "region": "猫小胖",
+    "server": "摩杜纳",
+    "progress": 62.5,
+    "level": 124,
+    "lastUpdate": "2025-11-09 05:00:00",
+    "source": "cn",
+    "timestamp": "2025-11-08T21:26:03.953Z"
+  },
+  {
+    "region": "国际服-北美",
+    "server": "Adamantoise",
+    "dc": "Aether",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.242Z"
+  },
+  {
+    "region": "国际服-北美",
+    "server": "Cactuar",
+    "dc": "Aether",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.244Z"
+  },
+  {
+    "region": "国际服-北美",
+    "server": "Faerie",
+    "dc": "Aether",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.245Z"
+  },
+  {
+    "region": "国际服-北美",
+    "server": "Gilgamesh",
+    "dc": "Aether",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.245Z"
+  },
+  {
+    "region": "国际服-北美",
+    "server": "Jenova",
+    "dc": "Aether",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.245Z"
+  },
+  {
+    "region": "国际服-北美",
+    "server": "Midgardsormr",
+    "dc": "Aether",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.246Z"
+  },
+  {
+    "region": "国际服-北美",
+    "server": "Sargatanas",
+    "dc": "Aether",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.246Z"
+  },
+  {
+    "region": "国际服-北美",
+    "server": "Siren",
+    "dc": "Aether",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.246Z"
+  },
+  {
+    "region": "国际服-北美",
+    "server": "Balmung",
+    "dc": "Crystal",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.247Z"
+  },
+  {
+    "region": "国际服-北美",
+    "server": "Brynhildr",
+    "dc": "Crystal",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.247Z"
+  },
+  {
+    "region": "国际服-北美",
+    "server": "Coeurl",
+    "dc": "Crystal",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.248Z"
+  },
+  {
+    "region": "国际服-北美",
+    "server": "Diabolos",
+    "dc": "Crystal",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.248Z"
+  },
+  {
+    "region": "国际服-北美",
+    "server": "Goblin",
+    "dc": "Crystal",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.248Z"
+  },
+  {
+    "region": "国际服-北美",
+    "server": "Malboro",
+    "dc": "Crystal",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.248Z"
+  },
+  {
+    "region": "国际服-北美",
+    "server": "Mateus",
+    "dc": "Crystal",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.249Z"
+  },
+  {
+    "region": "国际服-北美",
+    "server": "Zalera",
+    "dc": "Crystal",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.249Z"
+  },
+  {
+    "region": "国际服-北美",
+    "server": "Cuchulainn",
+    "dc": "Dynamis",
+    "progress": 75,
+    "level": 20,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.249Z"
+  },
+  {
+    "region": "国际服-北美",
+    "server": "Golem",
+    "dc": "Dynamis",
+    "progress": 75,
+    "level": 20,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.250Z"
+  },
+  {
+    "region": "国际服-北美",
+    "server": "Halicarnassus",
+    "dc": "Dynamis",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.250Z"
+  },
+  {
+    "region": "国际服-北美",
+    "server": "Kraken",
+    "dc": "Dynamis",
+    "progress": 75,
+    "level": 20,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.250Z"
+  },
+  {
+    "region": "国际服-北美",
+    "server": "Maduin",
+    "dc": "Dynamis",
+    "progress": 87.5,
+    "level": 20,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.250Z"
+  },
+  {
+    "region": "国际服-北美",
+    "server": "Marilith",
+    "dc": "Dynamis",
+    "progress": 87.5,
+    "level": 20,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.251Z"
+  },
+  {
+    "region": "国际服-北美",
+    "server": "Rafflesia",
+    "dc": "Dynamis",
+    "progress": 75,
+    "level": 20,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.251Z"
+  },
+  {
+    "region": "国际服-北美",
+    "server": "Seraph",
+    "dc": "Dynamis",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.251Z"
+  },
+  {
+    "region": "国际服-北美",
+    "server": "Behemoth",
+    "dc": "Primal",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.251Z"
+  },
+  {
+    "region": "国际服-北美",
+    "server": "Excalibur",
+    "dc": "Primal",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.251Z"
+  },
+  {
+    "region": "国际服-北美",
+    "server": "Exodus",
+    "dc": "Primal",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.251Z"
+  },
+  {
+    "region": "国际服-北美",
+    "server": "Famfrit",
+    "dc": "Primal",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.252Z"
+  },
+  {
+    "region": "国际服-北美",
+    "server": "Hyperion",
+    "dc": "Primal",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.252Z"
+  },
+  {
+    "region": "国际服-北美",
+    "server": "Lamia",
+    "dc": "Primal",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.252Z"
+  },
+  {
+    "region": "国际服-北美",
+    "server": "Leviathan",
+    "dc": "Primal",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.252Z"
+  },
+  {
+    "region": "国际服-北美",
+    "server": "Ultros",
+    "dc": "Primal",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.253Z"
+  },
+  {
+    "region": "国际服-欧洲",
+    "server": "Cerberus",
+    "dc": "Chaos",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.253Z"
+  },
+  {
+    "region": "国际服-欧洲",
+    "server": "Louisoix",
+    "dc": "Chaos",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.253Z"
+  },
+  {
+    "region": "国际服-欧洲",
+    "server": "Moogle",
+    "dc": "Chaos",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.254Z"
+  },
+  {
+    "region": "国际服-欧洲",
+    "server": "Omega",
+    "dc": "Chaos",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.254Z"
+  },
+  {
+    "region": "国际服-欧洲",
+    "server": "Phantom",
+    "dc": "Chaos",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.254Z"
+  },
+  {
+    "region": "国际服-欧洲",
+    "server": "Ragnarok",
+    "dc": "Chaos",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.254Z"
+  },
+  {
+    "region": "国际服-欧洲",
+    "server": "Sagittarius",
+    "dc": "Chaos",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.254Z"
+  },
+  {
+    "region": "国际服-欧洲",
+    "server": "Spriggan",
+    "dc": "Chaos",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.255Z"
+  },
+  {
+    "region": "国际服-欧洲",
+    "server": "Alpha",
+    "dc": "Light",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.255Z"
+  },
+  {
+    "region": "国际服-欧洲",
+    "server": "Lich",
+    "dc": "Light",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.255Z"
+  },
+  {
+    "region": "国际服-欧洲",
+    "server": "Odin",
+    "dc": "Light",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.256Z"
+  },
+  {
+    "region": "国际服-欧洲",
+    "server": "Phoenix",
+    "dc": "Light",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.256Z"
+  },
+  {
+    "region": "国际服-欧洲",
+    "server": "Raiden",
+    "dc": "Light",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.256Z"
+  },
+  {
+    "region": "国际服-欧洲",
+    "server": "Shiva",
+    "dc": "Light",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.256Z"
+  },
+  {
+    "region": "国际服-欧洲",
+    "server": "Twintania",
+    "dc": "Light",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.256Z"
+  },
+  {
+    "region": "国际服-欧洲",
+    "server": "Zodiark",
+    "dc": "Light",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.256Z"
+  },
+  {
+    "region": "国际服-大洋洲",
+    "server": "Bismarck",
+    "dc": "Materia",
+    "progress": 75,
+    "level": 20,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.257Z"
+  },
+  {
+    "region": "国际服-大洋洲",
+    "server": "Ravana",
+    "dc": "Materia",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.257Z"
+  },
+  {
+    "region": "国际服-大洋洲",
+    "server": "Sephirot",
+    "dc": "Materia",
+    "progress": 75,
+    "level": 20,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.257Z"
+  },
+  {
+    "region": "国际服-大洋洲",
+    "server": "Sophia",
+    "dc": "Materia",
+    "progress": 75,
+    "level": 20,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.257Z"
+  },
+  {
+    "region": "国际服-大洋洲",
+    "server": "Zurvan",
+    "dc": "Materia",
+    "progress": 75,
+    "level": 20,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.257Z"
+  },
+  {
+    "region": "国际服-日本",
+    "server": "Aegis",
+    "dc": "Elemental",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.258Z"
+  },
+  {
+    "region": "国际服-日本",
+    "server": "Atomos",
+    "dc": "Elemental",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.258Z"
+  },
+  {
+    "region": "国际服-日本",
+    "server": "Carbuncle",
+    "dc": "Elemental",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.258Z"
+  },
+  {
+    "region": "国际服-日本",
+    "server": "Garuda",
+    "dc": "Elemental",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.258Z"
+  },
+  {
+    "region": "国际服-日本",
+    "server": "Gungnir",
+    "dc": "Elemental",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.258Z"
+  },
+  {
+    "region": "国际服-日本",
+    "server": "Kujata",
+    "dc": "Elemental",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.258Z"
+  },
+  {
+    "region": "国际服-日本",
+    "server": "Tonberry",
+    "dc": "Elemental",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.258Z"
+  },
+  {
+    "region": "国际服-日本",
+    "server": "Typhon",
+    "dc": "Elemental",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.259Z"
+  },
+  {
+    "region": "国际服-日本",
+    "server": "Alexander",
+    "dc": "Gaia",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.259Z"
+  },
+  {
+    "region": "国际服-日本",
+    "server": "Bahamut",
+    "dc": "Gaia",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.259Z"
+  },
+  {
+    "region": "国际服-日本",
+    "server": "Durandal",
+    "dc": "Gaia",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.259Z"
+  },
+  {
+    "region": "国际服-日本",
+    "server": "Fenrir",
+    "dc": "Gaia",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.259Z"
+  },
+  {
+    "region": "国际服-日本",
+    "server": "Ifrit",
+    "dc": "Gaia",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.259Z"
+  },
+  {
+    "region": "国际服-日本",
+    "server": "Ridill",
+    "dc": "Gaia",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.260Z"
+  },
+  {
+    "region": "国际服-日本",
+    "server": "Tiamat",
+    "dc": "Gaia",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.262Z"
+  },
+  {
+    "region": "国际服-日本",
+    "server": "Ultima",
+    "dc": "Gaia",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.262Z"
+  },
+  {
+    "region": "国际服-日本",
+    "server": "Anima",
+    "dc": "Mana",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.262Z"
+  },
+  {
+    "region": "国际服-日本",
+    "server": "Asura",
+    "dc": "Mana",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.262Z"
+  },
+  {
+    "region": "国际服-日本",
+    "server": "Chocobo",
+    "dc": "Mana",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.263Z"
+  },
+  {
+    "region": "国际服-日本",
+    "server": "Hades",
+    "dc": "Mana",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.263Z"
+  },
+  {
+    "region": "国际服-日本",
+    "server": "Ixion",
+    "dc": "Mana",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.263Z"
+  },
+  {
+    "region": "国际服-日本",
+    "server": "Masamune",
+    "dc": "Mana",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.264Z"
+  },
+  {
+    "region": "国际服-日本",
+    "server": "Pandaemonium",
+    "dc": "Mana",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.264Z"
+  },
+  {
+    "region": "国际服-日本",
+    "server": "Titan",
+    "dc": "Mana",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.264Z"
+  },
+  {
+    "region": "国际服-日本",
+    "server": "Belias",
+    "dc": "Meteor",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.264Z"
+  },
+  {
+    "region": "国际服-日本",
+    "server": "Mandragora",
+    "dc": "Meteor",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.264Z"
+  },
+  {
+    "region": "国际服-日本",
+    "server": "Ramuh",
+    "dc": "Meteor",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.265Z"
+  },
+  {
+    "region": "国际服-日本",
+    "server": "Shinryu",
+    "dc": "Meteor",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.265Z"
+  },
+  {
+    "region": "国际服-日本",
+    "server": "Unicorn",
+    "dc": "Meteor",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.265Z"
+  },
+  {
+    "region": "国际服-日本",
+    "server": "Valefor",
+    "dc": "Meteor",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.265Z"
+  },
+  {
+    "region": "国际服-日本",
+    "server": "Yojimbo",
+    "dc": "Meteor",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.265Z"
+  },
+  {
+    "region": "国际服-日本",
+    "server": "Zeromus",
+    "dc": "Meteor",
+    "progress": 100,
+    "level": 21,
+    "lastUpdate": "2025-11-08 21:26:03",
+    "source": "na",
+    "timestamp": "2025-11-08T21:26:03.266Z"
+  }
+]
