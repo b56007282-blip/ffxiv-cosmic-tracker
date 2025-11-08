@@ -2,7 +2,7 @@ const axios = require('axios');
 const cheerio = require('cheerio');
 const fs = require('fs');
 const path = require('path');
-const moment = require('moment-timezone'); // 注意：需使用 moment-timezone 处理时区
+const moment = require('moment');
 
 // 确保数据目录存在
 const historyDir = path.join(__dirname, '../data/history');
@@ -10,7 +10,14 @@ if (!fs.existsSync(historyDir)) {
   fs.mkdirSync(historyDir, { recursive: true });
 }
 
-// 爬取国服数据
+// 请求头配置
+const headers = {
+  'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+  'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+  'Accept-Language': 'zh-CN,zh;q=0.9'
+};
+
+// 爬取国服数据（匹配最新接口）
 async function crawlCN() {
   try {
     const apiUrl = 'https://ff14act.web.sdo.com/api/cosmicData/getCosmicData';
@@ -54,22 +61,21 @@ async function crawlCN() {
       return [];
     }
 
+    // 解析数据（根据实际规则：ProgressRate / 10 = 百分比）
     const servers = [];
     res.data.data.forEach(item => {
+      // 核心修复：将ProgressRate除以10得到正确百分比（如875 → 87.5%）
       const rawProgress = parseInt(item.ProgressRate || 0);
-      const progress = Math.min(Math.max(rawProgress / 10, 0), 100);
+      const progress = Math.min(Math.max(rawProgress / 10, 0), 100); // 限制范围0-100
 
       servers.push({
         region: item.area_name || '国服',
         server: item.group_name || '未知服务器',
-        progress: progress,
+        progress: progress, // 保留一位小数（如87.5）
         level: parseInt(item.DevelopmentGrade || 0),
-        // 核心修改1：使用 GMT+8 时区格式化时间（Asia/Shanghai）
-        lastUpdate: item.data_time ? moment(item.data_time).tz('Asia/Shanghai').format('YYYY-MM-DD HH:mm:ss') : moment().tz('Asia/Shanghai').format('YYYY-MM-DD HH:mm:ss'),
+        lastUpdate: item.data_time || moment().format('YYYY-MM-DD HH:mm:ss'),
         source: 'cn',
-        // 保留 ISO 时间用于跨时区兼容，新增 gmt8Timestamp 字段显示 GMT+8 时间
-        timestamp: new Date().toISOString(),
-        gmt8Timestamp: moment().tz('Asia/Shanghai').format('YYYY-MM-DD HH:mm:ss')
+        timestamp: new Date().toISOString()
       });
     });
 
@@ -148,11 +154,9 @@ async function crawlNA() {
         dc: dcTitle,
         progress,
         level,
-        // 核心修改2：国际服同样使用 GMT+8 时区
-        lastUpdate: moment().tz('Asia/Shanghai').format('YYYY-MM-DD HH:mm:ss'),
+        lastUpdate: moment().format('YYYY-MM-DD HH:mm:ss'),
         source: 'na',
-        timestamp: new Date().toISOString(),
-        gmt8Timestamp: moment().tz('Asia/Shanghai').format('YYYY-MM-DD HH:mm:ss')
+        timestamp: new Date().toISOString()
       });
     });
 
@@ -164,15 +168,14 @@ async function crawlNA() {
   }
 }
 
-// 获取上一次的历史数据
+// 获取上一次的历史数据（仅服务器数据，过滤元信息）
 function getLastHistoryData() {
   try {
     const files = fs.readdirSync(historyDir)
       .filter(file => file.endsWith('.json'))
       .map(file => ({
         name: file,
-        // 核心修改3：解析文件名时使用 GMT+8 时间
-        time: moment(file.replace('.json', ''), 'YYYY-MM-DD-HH-mm').tz('Asia/Shanghai').toDate()
+        time: new Date(file.replace('.json', '').replace(/-/g, ' '))
       }))
       .sort((a, b) => b.time - a.time);
 
@@ -180,6 +183,7 @@ function getLastHistoryData() {
       const lastFile = files[0].name;
       const lastFilePath = path.join(historyDir, lastFile);
       const lastData = JSON.parse(fs.readFileSync(lastFilePath, 'utf8'));
+      // 过滤掉进度变化元数据，只保留服务器数据（source字段标识服务器数据）
       return Array.isArray(lastData) ? lastData.filter(item => item.source) : [];
     }
   } catch (err) {
@@ -188,8 +192,9 @@ function getLastHistoryData() {
   return [];
 }
 
-// 主函数
+// 主函数（核心修复）
 async function main() {
+  // 1. 爬取当前数据
   const [cnData, naData] = await Promise.all([crawlCN(), crawlNA()]);
   const currentData = [...cnData, ...naData];
 
@@ -198,44 +203,51 @@ async function main() {
     return;
   }
 
+  // 2. 获取上一次数据（干净的服务器数据）
   const lastData = getLastHistoryData();
+
+  // 3. 计算当前周期的进度变化（彻底重新计算，不依赖任何缓存）
   const progressChanges = [];
   currentData.forEach(current => {
+    // 生成唯一标识：region + server（如"国服-猫小胖-摩杜纳"）
     const currentId = `${current.region}-${current.server}`;
+    
+    // 查找上一次数据中相同的服务器
     const last = lastData.find(item => `${item.region}-${item.server}` === currentId);
     
+    // 仅记录当前周期的变化
     if (last && last.progress !== current.progress) {
       progressChanges.push({
         serverId: currentId,
         oldProgress: last.progress,
         newProgress: current.progress,
-        // 核心修改4：进度变化时间使用 GMT+8
-        changeTime: moment().tz('Asia/Shanghai').format('YYYY-MM-DD HH:mm:ss')
+        changeTime: new Date().toISOString()
       });
     }
   });
 
+  // 4. 构造最终数据（当前变化 + 最新服务器数据）
   const finalData = [
     { 
       type: 'progress_changes', 
       count: progressChanges.length,
-      changes: progressChanges.map(c => c.serverId),
-      // 核心修改5：元数据时间使用 GMT+8
-      timestamp: moment().tz('Asia/Shanghai').format('YYYY-MM-DD HH:mm:ss')
+      changes: progressChanges.map(c => c.serverId), // 仅保留服务器标识
+      timestamp: new Date().toISOString()
     },
     ...currentData
   ];
 
-  // 核心修改6：文件名使用 GMT+8 时间戳
-  const timestamp = moment().tz('Asia/Shanghai').format('YYYY-MM-DD-HH-mm');
+  // 5. 保存新文件（文件名含时间戳，确保唯一性）
+  const timestamp = moment().format('YYYY-MM-DD-HH-mm');
   const filePath = path.join(historyDir, `${timestamp}.json`);
   fs.writeFileSync(filePath, JSON.stringify(finalData, null, 2));
   
-  console.log(`[${moment().tz('Asia/Shanghai').format('YYYY-MM-DD HH:mm:ss')}] 成功保存 ${currentData.length} 条数据至 ${filePath}`);
+  // 输出结果
+  console.log(`成功保存 ${currentData.length} 条数据至 ${filePath}`);
   if (progressChanges.length > 0) {
-    console.log(`[${moment().tz('Asia/Shanghai').format('YYYY-MM-DD HH:mm:ss')}] 当前周期进度变化的服务器: ${progressChanges.map(c => c.serverId).join(', ')}`);
+    console.log(`当前周期进度变化的服务器: ${progressChanges.map(c => c.serverId).join(', ')}`);
   } else {
-    console.log(`[${moment().tz('Asia/Shanghai').format('YYYY-MM-DD HH:mm:ss')}] 当前周期无服务器进度变化`);
+    console.log('当前周期无服务器进度变化');
   }
 }
 
