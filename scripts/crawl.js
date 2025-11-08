@@ -20,73 +20,84 @@ const headers = {
 // 爬取国服数据（最新接口适配版）
 async function crawlCN() {
   try {
-    // 请替换为真实国服URL（从HTML推测的正确路径）
+    // 国服实际URL（包含哈希路由）
     const url = 'https://actff1.web.sdo.com/project/20250619cosmicexploration/v4kjfz92uewnum597r5wr0fa3km7bg/index.html#/cosmic_exploration/report/';
     
     const headers = {
       'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36',
       'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
       'Accept-Language': 'zh-CN,zh;q=0.9',
-      'Referer': 'https://xxx.finalfantasyxiv.com/' // 增加Referer模拟正常访问
+      'Referer': 'https://actff1.web.sdo.com/',
+      // 添加常见Cookie（从浏览器复制实际Cookie替换）
+      'Cookie': 'Hm_lvt_xxx=xxx; Hm_lpvt_xxx=xxx; SESSIONID=xxx'
     };
 
-    const res = await axios.get(url, { headers, timeout: 20000 });
+    // 关键修复：处理哈希路由页面，可能需要禁用默认的哈希解析
+    const res = await axios.get(url, { 
+      headers, 
+      timeout: 20000,
+      maxRedirects: 0, // 禁止自动重定向，避免路由跳转丢失数据
+      transformResponse: [data => data] // 保留原始HTML不解析
+    });
 
     if (!res.data) {
       console.error('国服无响应数据');
       return [];
     }
 
+    // 调试：保存页面HTML到本地分析（临时开启）
+    // const fs = require('fs');
+    // fs.writeFileSync('cn_actual_page.html', res.data);
+
     const $ = cheerio.load(res.data);
     const servers = [];
 
-    // 关键修复：先定位数据中心容器，再找到内部的服务器列表容器（cosmic__report__world）
-    $('.cosmic__report__dc').each((dcIndex, dcEl) => {
+    // 核心修复：根据实际页面结构调整选择器层级
+    // 从HTML看，数据中心容器可能在.tab-content或直接在#app下
+    const dcContainers = $('#app .cosmic__report__dc, .tab-content .cosmic__report__dc');
+    if (dcContainers.length === 0) {
+      console.error('未找到任何数据中心容器，可能页面结构或Cookie错误');
+      return [];
+    }
+
+    dcContainers.each((dcIndex, dcEl) => {
       const dcTitle = $(dcEl).find('.cosmic__report__dc__title').text().trim() || '未知数据中心';
       
-      // 服务器卡片被包裹在.cosmic__report__world中，必须先定位这个容器
-      const worldContainer = $(dcEl).find('.cosmic__report__world');
+      // 服务器列表容器可能带有show类（如.cosmic__report__world.show）
+      const worldContainer = $(dcEl).find('.cosmic__report__world.show, .cosmic__report__world');
       if (worldContainer.length === 0) {
         console.debug(`数据中心${dcTitle}未找到服务器列表容器`);
         return;
       }
 
-      // 从服务器列表容器中提取所有卡片（包含completed特殊卡片）
+      // 提取所有服务器卡片（包含特殊完成卡片）
       worldContainer.find('.cosmic__report__card').each((cardIndex, cardEl) => {
-        // 1. 提取服务器名称（严格匹配HTML中的结构）
         const serverName = $(cardEl).find('.cosmic__report__card__name p').text().trim();
         if (!serverName) {
           console.debug(`数据中心${dcTitle}存在无名称卡片，跳过`);
           return;
         }
 
-        // 2. 计算进度（8等份，兼容特殊完成状态卡片）
+        // 进度计算（8等份）
         let progress = 0;
         const isCompleted = $(cardEl).hasClass('completed');
         if (isCompleted) {
           progress = 100;
         } else {
-          // 进度条在.cosmic__report__status__progress__bar中
           const progressBar = $(cardEl).find('.cosmic__report__status__progress__bar');
           const gaugeClass = progressBar.attr('class') || '';
           const gaugeMatch = gaugeClass.match(/gauge-(\d+)/);
           
           if (gaugeMatch) {
             const gaugeLevel = parseInt(gaugeMatch[1], 10);
-            progress = Math.round((gaugeLevel / 8) * 100 * 10) / 10; // 如gauge-7 → 87.5
-          } else {
-            console.debug(`服务器${serverName}未找到进度条，进度设为0`);
+            progress = Math.round((gaugeLevel / 8) * 100 * 10) / 10;
           }
         }
 
-        // 3. 提取等级（直接从HTML的等级标签获取）
+        // 提取等级
         const levelText = $(cardEl).find('.cosmic__report__grade__level p').text().trim();
         const level = parseInt(levelText || 0);
-        if (level === 0 && levelText) {
-          console.debug(`服务器${serverName}等级提取失败，原始文本: ${levelText}`);
-        }
 
-        // 4. 组装数据
         servers.push({
           region: '国服',
           server: serverName,
@@ -100,12 +111,11 @@ async function crawlCN() {
       });
     });
 
-    // 结果验证与调试
     if (servers.length === 0) {
-      console.error('爬取0条数据，可能原因：');
-      console.error('1. 服务器列表容器选择器错误（当前用.cosmic__report__world）');
-      console.error('2. 页面存在反爬，可尝试添加Cookie');
-      console.error('3. URL错误（请确认国服实际地址）');
+      console.error('爬取0条数据，最终排查：');
+      console.error('1. 请替换headers中的Cookie为浏览器实际登录Cookie');
+      console.error('2. 确认页面是否需要先登录（手动访问URL检查）');
+      console.error('3. 检查保存的cn_actual_page.html是否包含服务器数据');
     } else {
       console.log(`国服成功爬取 ${servers.length} 条数据`);
     }
