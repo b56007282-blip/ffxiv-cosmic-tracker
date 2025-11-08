@@ -120,3 +120,6 @@ async function main() {
 }
 
 main();
+// 在保存文件后添加
+console.log(`文件已保存到: ${filePath}`);
+console.log(`文件内容: ${JSON.stringify(allData.slice(0, 1), null, 2)}`);
