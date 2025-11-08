@@ -61,18 +61,17 @@ async function crawlCN() {
       return [];
     }
 
-    // 解析数据（8等份进度计算）
+    // 解析数据（根据实际规则：ProgressRate / 10 = 百分比）
     const servers = [];
     res.data.data.forEach(item => {
-      const gaugeLevel = parseInt(item.ProgressRate || 0);
-      const progress = gaugeLevel > 0 
-        ? Math.round((gaugeLevel / 8) * 100 * 10) / 10 
-        : 0;
+      // 核心修复：将ProgressRate除以10得到正确百分比（如875 → 87.5%）
+      const rawProgress = parseInt(item.ProgressRate || 0);
+      const progress = Math.min(Math.max(rawProgress / 10, 0), 100); // 限制范围0-100
 
       servers.push({
         region: item.area_name || '国服',
         server: item.group_name || '未知服务器',
-        progress: Math.min(progress, 100),
+        progress: progress, // 保留一位小数（如87.5）
         level: parseInt(item.DevelopmentGrade || 0),
         lastUpdate: item.data_time || moment().format('YYYY-MM-DD HH:mm:ss'),
         source: 'cn',
