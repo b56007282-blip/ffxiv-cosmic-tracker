@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', async () => {
   // 替换为你的GitHub用户名和仓库名
-  const GITHUB_USER = 'your-username';
-  const REPO_NAME = 'your-repo-name';
+  const GITHUB_USER = 'b56007282-blip';
+  const REPO_NAME = 'ffxiv-cosmic-tracker';
 
   try {
     // 获取所有历史数据文件
