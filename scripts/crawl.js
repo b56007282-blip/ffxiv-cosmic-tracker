@@ -20,57 +20,58 @@ const headers = {
 // 爬取国服数据（最新接口适配版）
 async function crawlCN() {
   try {
-    // 最新有效接口（根据抓包结果）
-    const apiUrl = 'https://ff14act.web.sdo.com/api/cosmicData/getCosmicData';
+    // 国服URL（根据实际情况调整）
+    const url = 'https://actff1.web.sdo.com/project/20250619cosmicexploration/v4kjfz92uewnum597r5wr0fa3km7bg/index.html#/cosmic_exploration/report/';
     
-    // 构造请求头（完全模拟浏览器请求）
-    const requestHeaders = {
-      'Accept': 'application/json, text/plain, */*',
-      'Accept-Encoding': 'gzip, deflate, br, zstd',
-      'Accept-Language': 'zh-TW,zh;q=0.9,en-US;q=0.8,en;q=0.7',
-      'Connection': 'keep-alive',
-      'Host': 'ff14act.web.sdo.com',
-      'Origin': 'https://actff1.web.sdo.com',
-      'Referer': 'https://actff1.web.sdo.com/',
-      'Sec-Fetch-Dest': 'empty',
-      'Sec-Fetch-Mode': 'cors',
-      'Sec-Fetch-Site': 'same-site',
-      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36',
-      'X-Requested-With': 'XMLHttpRequest'
+    const headers = {
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36',
+      'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8'
     };
 
-    // 发送GET请求并添加时间戳避免缓存
-    const res = await axios.get(apiUrl, {
-      headers: requestHeaders,
-      timeout: 15000,
-      params: {
-        t: new Date().getTime() // 时间戳参数防止304缓存
-      }
-    });
-
-    // 验证接口响应
+    const res = await axios.get(url, { headers, timeout: 20000 });
     if (!res.data) {
-      console.error('国服接口无返回数据');
-      return [];
-    }
-    if (res.data.code !== 10000) { // 接口成功状态码为10000
-      console.error('国服接口返回错误:', `Code=${res.data.code}, Message=${res.data.msg}`);
-      return [];
-    }
-    if (!Array.isArray(res.data.data) || res.data.data.length === 0) {
-      console.error('国服数据格式错误: 数据列表为空或不是数组');
+      console.error('国服无响应数据');
       return [];
     }
 
-    // 解析服务器数据（根据实际返回字段映射）
+    const $ = cheerio.load(res.data);
     const servers = [];
-    res.data.data.forEach(item => {
+
+    // 遍历国服服务器卡片（选择器根据实际页面调整）
+    $('.cn-cosmic__report__card').each((i, el) => {
+      const serverName = $(el).find('.cn-card__name').text().trim();
+      if (!serverName) return;
+
+      // 进度计算同步为8等份（需求3）
+      let progress = 0;
+      const isCompleted = $(el).hasClass('completed');
+      if (isCompleted) {
+        progress = 100;
+      } else {
+        const progressBar = $(el).find('.cn-progress__bar');
+        const gaugeClass = progressBar.attr('class') || '';
+        const gaugeMatch = gaugeClass.match(/gauge-(\d+)/);
+        
+        if (gaugeMatch) {
+          const gaugeLevel = parseInt(gaugeMatch[1], 10);
+          progress = Math.round((gaugeLevel / 8) * 100 * 10) / 10; // 与国际服保持一致
+        }
+      }
+
+      // 等级直接从网页获取（需求4）
+      const levelText = $(el).find('.cn-grade__level').text().trim();
+      const level = parseInt(levelText || 0);
+
+      // 国服数据中心（根据实际情况调整）
+      const dcTitle = $(el).closest('.cn-dc__group').find('.cn-dc__title').text().trim();
+
       servers.push({
-        region: item.area_name || '国服', // 大区名称（如"陆行鸟"、"莫古力"）
-        server: item.group_name || '未知服务器', // 服务器名称（如"拉诺西亚"、"神拳痕"）
-        progress: Math.min(Math.round(item.ProgressRate / 10), 100), // 进度率转换为百分比（ProgressRate/10）
-        level: parseInt(item.DevelopmentGrade || 0), // 开发等级（对应原level字段）
-        lastUpdate: item.data_time || moment().format('YYYY-MM-DD HH:mm:ss'), // 数据更新时间
+        region: '国服',
+        server: serverName,
+        dc: dcTitle,
+        progress,
+        level,
+        lastUpdate: moment().format('YYYY-MM-DD HH:mm:ss'),
         source: 'cn',
         timestamp: new Date().toISOString()
       });
@@ -80,12 +81,6 @@ async function crawlCN() {
     return servers;
   } catch (err) {
     console.error('国服爬取失败:', err.message);
-    // 输出详细错误信息用于调试
-    if (err.response) {
-      console.error('响应状态码:', err.response.status);
-      console.error('响应体:', err.response.data);
-      console.error('响应头:', err.response.headers);
-    }
     return [];
   }
 }
@@ -118,45 +113,55 @@ async function crawlNA() {
       const serverName = $(el).find('.cosmic__report__card__name p').text().trim();
       if (!serverName) return;
 
-      // 提取进度状态（核心修正：8等份计算）
+      // 提取进度状态（8等份计算）
       let progress = 0;
       const isCompleted = $(el).hasClass('completed');
       if (isCompleted) {
         progress = 100; // 已完成服务器进度为100%
       } else {
-        // 从进度条类名提取gauge等级（如gauge-7）
         const progressBar = $(el).find('.cosmic__report__status__progress__bar');
         const gaugeClass = progressBar.attr('class') || '';
         const gaugeMatch = gaugeClass.match(/gauge-(\d+)/);
         
         if (gaugeMatch) {
           const gaugeLevel = parseInt(gaugeMatch[1], 10);
-          // 关键修正：8等份 → 等级÷8×100（如7÷8=87.5%）
           progress = Math.round((gaugeLevel / 8) * 100 * 10) / 10; // 保留一位小数
         }
       }
 
-      // 提取等级
+      // 提取等级（直接从网页获取）
       const levelText = $(el).find('.cosmic__report__grade__level p').text().trim();
       const level = parseInt(levelText || 0);
 
       // 提取数据中心
       const dcTitle = $(el).closest('.cosmic__report__dc').find('.cosmic__report__dc__title').text().trim();
 
-      // 提取区域
-      let region = '国际服';
-      const activeRegionTab = $('.cosmic__report__tab .active').text().trim();
-      if (activeRegionTab) {
-        region = `国际服-${activeRegionTab}`;
+      // 根据dc映射region（核心修正）
+      let region;
+      const naDCs = ['Aether', 'Crystal', 'Dynamis', 'Primal'];
+      const euDCs = ['Chaos', 'Light'];
+      const ocDCs = ['Materia'];
+      const jpDCs = ['Elemental', 'Gaia', 'Mana', 'Meteor'];
+
+      if (naDCs.includes(dcTitle)) {
+        region = '国际服-北美';
+      } else if (euDCs.includes(dcTitle)) {
+        region = '国际服-欧洲';
+      } else if (ocDCs.includes(dcTitle)) {
+        region = '国际服-大洋洲';
+      } else if (jpDCs.includes(dcTitle)) {
+        region = '国际服-日本';
+      } else {
+        region = '国际服-未知区域'; // 兼容异常情况
       }
 
       servers.push({
         region,
         server: serverName,
         dc: dcTitle,
-        progress, // 修正后的值（如87.5%）
+        progress,
         level,
-        status: isCompleted ? 'completed' : 'in_progress',
+        // 移除status字段（需求1）
         lastUpdate: moment().format('YYYY-MM-DD HH:mm:ss'),
         source: 'na',
         timestamp: new Date().toISOString()
