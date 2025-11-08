@@ -21,7 +21,7 @@ const headers = {
 async function crawlCN() {
   try {
     // 请替换为真实国服URL（从HTML推测的正确路径）
-    const url = 'https://xxx.finalfantasyxiv.com/cosmic_exploration/report/';
+    const url = 'https://actff1.web.sdo.com/project/20250619cosmicexploration/v4kjfz92uewnum597r5wr0fa3km7bg/index.html#/cosmic_exploration/report/';
     
     const headers = {
       'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36',
