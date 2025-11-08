@@ -90,39 +90,72 @@ async function crawlCN() {
   }
 }
 
-// 爬取国际服数据
+// 爬取国际服数据（修复响应无法加载问题）
 async function crawlNA() {
   try {
-    const res = await axios.get('https://na.finalfantasyxiv.com/lodestone/cosmic_exploration/report/', {
+    const url = 'https://na.finalfantasyxiv.com/lodestone/cosmic_exploration/report/';
+    
+    // 1. 模拟完整浏览器请求头（关键修复）
+    const headers = {
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36',
+      'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+      'Accept-Language': 'en-US,en;q=0.5',
+      'Accept-Encoding': 'gzip, deflate, br',
+      'Connection': 'keep-alive',
+      'Upgrade-Insecure-Requests': '1',
+      'Sec-Fetch-Dest': 'document',
+      'Sec-Fetch-Mode': 'navigate',
+      'Sec-Fetch-Site': 'none',
+      'Sec-Fetch-User': '?1',
+      'Cache-Control': 'max-age=0'
+    };
+
+    // 2. 发送请求时禁用默认Cookie，避免被识别为自动化工具
+    const res = await axios.get(url, {
       headers,
-      timeout: 15000
+      timeout: 20000,
+      withCredentials: false, // 不携带Cookie
+      responseType: 'text' // 强制以文本形式接收（避免解析错误）
     });
+
+    // 3. 验证响应是否有效
+    if (!res.data || res.data.includes('403 Forbidden') || res.data.includes('Access Denied')) {
+      console.error('国际服请求被拦截，响应内容:', res.data.substring(0, 200)); // 打印前200字符调试
+      return [];
+    }
+
+    // 4. 解析HTML（如果数据是嵌入在页面中的）
     const $ = cheerio.load(res.data);
     const servers = [];
 
-    $('.world_table .world_row').each((i, el) => {
-      const region = '国际服';
-      const name = $(el).find('.world_name').text().trim();
-      const progressText = $(el).find('.progress_value').text().trim();
-      const progress = progressText ? parseInt(progressText) : 0;
-      const level = parseInt($(el).find('.level_text').text().replace('Level', '').trim() || 0);
-      const lastUpdate = $(el).find('.update_time').text().trim() || moment().format('YYYY-MM-DD HH:mm');
-
-      if (name) {
+    // 注意：以下选择器需根据实际页面结构调整（关键！）
+    // 示例：假设服务器数据在class为"world-entry"的元素中
+    $('.world-entry').each((i, el) => {
+      const serverName = $(el).find('.world-name').text().trim();
+      const progressText = $(el).find('.progress').text().trim().replace('%', '');
+      const levelText = $(el).find('.level').text().trim().replace('Level ', '');
+      
+      if (serverName) {
         servers.push({
-          region,
-          server: name,
-          progress,
-          level,
-          lastUpdate,
+          region: '国际服',
+          server: serverName,
+          progress: parseInt(progressText || 0),
+          level: parseInt(levelText || 0),
+          lastUpdate: moment().format('YYYY-MM-DD HH:mm:ss'), // 若页面有更新时间可替换
           source: 'na',
           timestamp: new Date().toISOString()
         });
       }
     });
+
+    console.log(`国际服成功爬取 ${servers.length} 条数据`);
     return servers;
   } catch (err) {
     console.error('国际服爬取失败:', err.message);
+    if (err.response) {
+      console.error('响应状态码:', err.response.status);
+      console.error('响应头:', err.response.headers);
+    }
     return [];
   }
 }
