@@ -20,15 +20,17 @@ const headers = {
 // 爬取国服数据（最新接口适配版）
 async function crawlCN() {
   try {
-    // 国服URL（根据实际情况调整）
-    const url = 'https://ff14act.web.sdo.com/api/cosmicData/getCosmicData';
+    // 国服实际URL（根据页面结构推测）
+    const url = 'https://actff1.web.sdo.com/project/20250619cosmicexploration/v4kjfz92uewnum597r5wr0fa3km7bg/index.html#/cosmic_exploration/report/';
     
     const headers = {
       'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36',
-      'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8'
+      'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+      'Accept-Language': 'zh-CN,zh;q=0.9'
     };
 
     const res = await axios.get(url, { headers, timeout: 20000 });
+
     if (!res.data) {
       console.error('国服无响应数据');
       return [];
@@ -37,43 +39,56 @@ async function crawlCN() {
     const $ = cheerio.load(res.data);
     const servers = [];
 
-    // 遍历国服服务器卡片（选择器根据实际页面调整）
-    $('.cn-cosmic__report__card').each((i, el) => {
-      const serverName = $(el).find('.cn-card__name').text().trim();
-      if (!serverName) return;
-
-      // 进度计算同步为8等份（需求3）
-      let progress = 0;
-      const isCompleted = $(el).hasClass('completed');
-      if (isCompleted) {
-        progress = 100;
-      } else {
-        const progressBar = $(el).find('.cn-progress__bar');
-        const gaugeClass = progressBar.attr('class') || '';
-        const gaugeMatch = gaugeClass.match(/gauge-(\d+)/);
-        
-        if (gaugeMatch) {
-          const gaugeLevel = parseInt(gaugeMatch[1], 10);
-          progress = Math.round((gaugeLevel / 8) * 100 * 10) / 10; // 与国际服保持一致
+    // 遍历所有数据中心（陆行鸟/莫古力/猫小胖/豆豆柴）
+    $('.cosmic__report__dc').each((dcIndex, dcEl) => {
+      // 提取数据中心名称（如"陆行鸟"）
+      const dcTitle = $(dcEl).find('.cosmic__report__dc__title').text().trim();
+      
+      // 遍历当前数据中心下的所有服务器卡片
+      $(dcEl).find('.cosmic__report__card').each((cardIndex, cardEl) => {
+        // 1. 提取服务器名称
+        const serverName = $(cardEl).find('.cosmic__report__card__name p').text().trim();
+        if (!serverName) {
+          console.debug(`跳过无名称的服务器卡片（数据中心：${dcTitle}）`);
+          return;
         }
-      }
 
-      // 等级直接从网页获取（需求4）
-      const levelText = $(el).find('.cn-grade__level').text().trim();
-      const level = parseInt(levelText || 0);
+        // 2. 计算进度（8等份，与国际服一致）
+        let progress = 0;
+        const isCompleted = $(cardEl).hasClass('completed');
+        if (isCompleted) {
+          progress = 100; // 已完成服务器进度为100%
+        } else {
+          const progressBar = $(cardEl).find('.cosmic__report__status__progress__bar');
+          const gaugeClass = progressBar.attr('class') || '';
+          const gaugeMatch = gaugeClass.match(/gauge-(\d+)/);
+          
+          if (gaugeMatch) {
+            const gaugeLevel = parseInt(gaugeMatch[1], 10);
+            progress = Math.round((gaugeLevel / 8) * 100 * 10) / 10; // 保留一位小数（如gauge-7 → 87.5）
+          } else {
+            console.debug(`服务器${serverName}未找到进度条，进度设为0`);
+          }
+        }
 
-      // 国服数据中心（根据实际情况调整）
-      const dcTitle = $(el).closest('.cn-dc__group').find('.cn-dc__title').text().trim();
+        // 3. 提取等级（直接从网页获取）
+        const levelText = $(cardEl).find('.cosmic__report__grade__level p').text().trim();
+        const level = parseInt(levelText || 0);
+        if (level === 0 && levelText) {
+          console.debug(`服务器${serverName}等级提取失败，原始文本：${levelText}`);
+        }
 
-      servers.push({
-        region: '国服',
-        server: serverName,
-        dc: dcTitle,
-        progress,
-        level,
-        lastUpdate: moment().format('YYYY-MM-DD HH:mm:ss'),
-        source: 'cn',
-        timestamp: new Date().toISOString()
+        // 4. 组装数据
+        servers.push({
+          region: '国服',
+          server: serverName,
+          dc: dcTitle || '未知数据中心',
+          progress,
+          level,
+          lastUpdate: moment().format('YYYY-MM-DD HH:mm:ss'),
+          source: 'cn',
+          timestamp: new Date().toISOString()
+        });
       });
     });
 
