@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * FFXIV 宇宙探索进度爬虫
- * 用法：node crawl.js
+ * 先删除旧 changes.json，再写本次新的
  */
 const axios   = require('axios');
 const cheerio = require('cheerio');
@@ -9,7 +9,7 @@ const fs      = require('fs');
 const path    = require('path');
 const moment  = require('moment');
 
-/* ====== 1. 目录初始化（基于仓库根）====== */
+/* 1. 目录初始化 */
 const repoRoot   = path.resolve(__dirname, '..');
 const historyDir = path.join(repoRoot, 'data', 'history');
 const publicDir  = path.join(repoRoot, 'public');
@@ -17,10 +17,10 @@ const publicFile = path.join(publicDir, 'data.json');
 fs.mkdirSync(historyDir, { recursive: true });
 fs.mkdirSync(publicDir,  { recursive: true });
 
-/* ====== 2. 工具：GMT+8 时间 ====== */
+/* 2. GMT+8 时间 */
 const now8 = () => moment().utcOffset(+8);
 
-/* ====== 3. 国服抓取 ====== */
+/* 3. 国服抓取 */
 async function fetchCN() {
   try {
     const { data } = await axios.get('https://ff14act.web.sdo.com/api/cosmicData/getCosmicData', {
@@ -43,7 +43,7 @@ async function fetchCN() {
   }
 }
 
-/* ====== 4. 国际服抓取 ====== */
+/* 4. 国际服抓取 */
 async function fetchNA() {
   try {
     const { data: html } = await axios.get('https://na.finalfantasyxiv.com/lodestone/cosmic_exploration/report/', {
@@ -66,15 +66,7 @@ async function fetchNA() {
       const regionMap = { Aether: '国际服-北美', Crystal: '国际服-北美', Dynamis: '国际服-北美', Primal: '国际服-北美',
                           Chaos: '国际服-欧洲', Light: '国际服-欧洲', Materia: '国际服-大洋洲',
                           Elemental: '国际服-日本', Gaia: '国际服-日本', Mana: '国际服-日本', Meteor: '国际服-日本' };
-      servers.push({
-        region: regionMap[dc] || '国际服-未知区域',
-        server: name,
-        dc,
-        progress,
-        level,
-        lastUpdate: now8().format('YYYY-MM-DD HH:mm:ss'),
-        source: 'na'
-      });
+      servers.push({ region: regionMap[dc] || '国际服-未知区域', server: name, dc, progress, level, lastUpdate: now8().format('YYYY-MM-DD HH:mm:ss'), source: 'na' });
     });
     return servers;
   } catch (e) {
@@ -83,7 +75,7 @@ async function fetchNA() {
   }
 }
 
-/* ====== 5. 读取上一份“干净”快照 ====== */
+/* 5. 读取上一周期干净快照 */
 function loadLastSnap() {
   try {
     const files = fs.readdirSync(historyDir)
@@ -92,7 +84,6 @@ function loadLastSnap() {
       .sort((a, b) => b.time - a.time);
     if (!files.length) return new Map();
     const arr = JSON.parse(fs.readFileSync(path.join(historyDir, files[0].name), 'utf8'));
-    // 只保留服务器数据（有 source 字段）
     return new Map(arr.filter(it => it.source).map(it => [`${it.region}-${it.server}`, it.progress]));
   } catch (e) {
     console.warn('读取历史快照失败:', e.message);
@@ -100,13 +91,18 @@ function loadLastSnap() {
   }
 }
 
-/* ====== 6. 主流程 ====== */
+/* 6. 主流程 */
 (async () => {
+  /* 6.1 先清旧 changes.json */
+  fs.readdirSync(historyDir)
+    .filter(f => f.endsWith('.changes.json'))
+    .forEach(f => fs.unlinkSync(path.join(historyDir, f)));
+
   const [cn, na] = await Promise.all([fetchCN(), fetchNA()]);
   const current = [...cn, ...na];
   if (!current.length) { console.log('未获取到任何数据'); return; }
 
-  /* 6.1 计算本次变化 */
+  /* 6.2 计算本次变化 */
   const lastMap = loadLastSnap();
   const changes = [];
   current.forEach(it => {
@@ -118,21 +114,16 @@ function loadLastSnap() {
     });
   });
 
-  /* 6.2 写文件 */
+  /* 6.3 写文件 */
   const ts = now8().format('YYYY-MM-DD-HH-mm');
-  // ① 干净快照（供下次对比）
   fs.writeFileSync(path.join(historyDir, `${ts}.json`), JSON.stringify(current, null, 2));
-  // ② 网页用
-  fs.writeFileSync(publicFile, JSON.stringify(current, null, 2));
-  // ③ 变化日志（仅本次）
-  if (changes.length) {
-    fs.writeFileSync(
-      path.join(historyDir, `${ts}.changes.json`),
-      JSON.stringify({ type: 'progress_changes', count: changes.length, changes }, null, 2)
-    );
-  }
+  fs.writeFileSync(path.join(publicDir, 'data.json'), JSON.stringify(current, null, 2));
+  if (changes.length) fs.writeFileSync(
+    path.join(historyDir, `${ts}.changes.json`),
+    JSON.stringify({ type: 'progress_changes', count: changes.length, changes }, null, 2)
+  );
 
-  /* 6.3 日志 */
+  /* 6.4 日志 */
   console.log(`保存 ${current.length} 条数据 → ${ts}.json & public/data.json`);
   if (changes.length) console.log(`本次变化: ${changes.map(c => c.serverId).join(', ')}`);
   else console.log('本次无变化');
