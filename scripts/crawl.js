@@ -114,15 +114,22 @@ function loadLastSnap() {
     });
   });
 
-  /* 6.2 写文件 */
-  const ts = now8().format('YYYY-MM-DD-HH-mm');
-  fs.writeFileSync(path.join(historyDir, `${ts}.json`), JSON.stringify(current, null, 2));
-  fs.writeFileSync(path.join(publicDir, 'data.json'), JSON.stringify(current, null, 2));
-  if (changes.length) fs.writeFileSync(
-    path.join(historyDir, `${ts}.changes.json`),
-    JSON.stringify({ type: 'progress_changes', count: changes.length, changes }, null, 2)
-  );
+/* 6.2 写文件 */
+const ts = now8().format('YYYY-MM-DD-HH-mm');
 
+// ① 历史快照（供下次对比）
+fs.writeFileSync(path.join(historyDir, `${ts}.json`), JSON.stringify(current, null, 2));
+
+// ② 网页用快照
+fs.writeFileSync(publicFile, JSON.stringify(current, null, 2));
+
+// ③ 变化日志（仅本次）也拷到 public
+if (changes.length) {
+  const changeFile = path.join(historyDir, `${ts}.changes.json`);
+  fs.writeFileSync(changeFile, JSON.stringify({ type: 'progress_changes', count: changes.length, changes }, null, 2));
+  // 同时复制到 public
+  fs.copyFileSync(changeFile, path.join(publicDir, `${ts}.changes.json`));
+}
   /* 6.3 日志 */
   console.log(`保存 ${current.length} 条数据 → ${ts}.json & public/data.json`);
   if (changes.length) console.log(`本次变化: ${changes.map(c => c.serverId).join(', ')}`);
