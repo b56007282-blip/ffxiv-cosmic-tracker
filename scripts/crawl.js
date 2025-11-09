@@ -93,16 +93,16 @@ function loadLastSnap() {
 
 /* 6. 主流程 */
 (async () => {
-  /* 6.1 先清旧 changes.json */
+  /* 6.0 只清旧 changes.json，保留历史快照 */
   fs.readdirSync(historyDir)
-    .filter(f => f.endsWith('.changes.json'))
+    .filter(f => f.endsWith('-changes.json'))
     .forEach(f => fs.unlinkSync(path.join(historyDir, f)));
 
   const [cn, na] = await Promise.all([fetchCN(), fetchNA()]);
   const current = [...cn, ...na];
   if (!current.length) { console.log('未获取到任何数据'); return; }
 
-  /* 6.2 计算本次变化 */
+  /* 6.1 计算本次变化 */
   const lastMap = loadLastSnap();
   const changes = [];
   current.forEach(it => {
@@ -114,7 +114,7 @@ function loadLastSnap() {
     });
   });
 
-  /* 6.3 写文件 */
+  /* 6.2 写文件 */
   const ts = now8().format('YYYY-MM-DD-HH-mm');
   fs.writeFileSync(path.join(historyDir, `${ts}.json`), JSON.stringify(current, null, 2));
   fs.writeFileSync(path.join(publicDir, 'data.json'), JSON.stringify(current, null, 2));
@@ -123,7 +123,7 @@ function loadLastSnap() {
     JSON.stringify({ type: 'progress_changes', count: changes.length, changes }, null, 2)
   );
 
-  /* 6.4 日志 */
+  /* 6.3 日志 */
   console.log(`保存 ${current.length} 条数据 → ${ts}.json & public/data.json`);
   if (changes.length) console.log(`本次变化: ${changes.map(c => c.serverId).join(', ')}`);
   else console.log('本次无变化');
