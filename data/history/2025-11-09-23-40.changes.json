@@ -1,0 +1,30 @@
+{
+  "type": "progress_changes",
+  "count": 4,
+  "changes": [
+    {
+      "serverId": "莫古力-白金幻象",
+      "oldProgress": 37.5,
+      "newProgress": 50,
+      "changeTime": "2025-11-09 23:40:30"
+    },
+    {
+      "serverId": "莫古力-旅人栈桥",
+      "oldProgress": 0,
+      "newProgress": 12.5,
+      "changeTime": "2025-11-09 23:40:30"
+    },
+    {
+      "serverId": "陆行鸟-幻影群岛",
+      "oldProgress": 50,
+      "newProgress": 62.5,
+      "changeTime": "2025-11-09 23:40:30"
+    },
+    {
+      "serverId": "国际服-大洋洲-Sephirot",
+      "oldProgress": 87.5,
+      "newProgress": 0,
+      "changeTime": "2025-11-09 23:40:30"
+    }
+  ]
+}
