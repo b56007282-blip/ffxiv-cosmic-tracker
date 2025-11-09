@@ -182,6 +182,8 @@ async function main() {
   fs.writeFileSync(path.join(historyDir, `${timestamp}.json`), JSON.stringify(currentData, null, 2));
 
   /* ---------- 4½ 写 public/data.json（供网页） ---------- */
+  const publicDir = path.join(__dirname, '..', 'public');
+  if (!fs.existsSync(publicDir)) fs.mkdirSync(publicDir, { recursive: true });
   const publicFile = path.join(publicDir, 'data.json');
   fs.writeFileSync(publicFile, JSON.stringify(currentData, null, 2));
 
@@ -196,5 +198,11 @@ async function main() {
   /* ---------- 6. 打印 ---------- */
   console.log(`成功保存 ${currentData.length} 条数据至 ${path.join(historyDir, `${timestamp}.json`)}`);
   console.log(`已同步最新数据 → ${publicFile}`);
-  ···
+  if (progressChanges.length) {
+    console.log(`当前周期进度变化的服务器: ${progressChanges.map(c => c.serverId).join(', ')}`);
+  } else {
+    console.log('当前周期无服务器进度变化');
+  }
 }
+
+main();
