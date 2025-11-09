@@ -174,14 +174,18 @@ async function main() {
     }
   });
 
-  /* ---------- 3. 统一 GMT+8 时间 ---------- */
+   /* ---------- 3. 统一 GMT+8 时间 ---------- */
   const now = moment().utcOffset(+8);
   const timestamp = now.format('YYYY-MM-DD-HH-mm');
 
   /* ---------- 4. 写“干净”快照（供下次对比） ---------- */
   fs.writeFileSync(path.join(historyDir, `${timestamp}.json`), JSON.stringify(currentData, null, 2));
 
-  /* ---------- 5. 写独立变化日志（不混入快照） ---------- */
+  /* ---------- 4½ 写 public/data.json（供网页） ---------- */
+  const publicFile = path.join(publicDir, 'data.json');
+  fs.writeFileSync(publicFile, JSON.stringify(currentData, null, 2));
+
+  /* ---------- 5. 写独立变化日志 ---------- */
   if (progressChanges.length) {
     fs.writeFileSync(
       path.join(historyDir, `${timestamp}.changes.json`),
@@ -191,11 +195,6 @@ async function main() {
 
   /* ---------- 6. 打印 ---------- */
   console.log(`成功保存 ${currentData.length} 条数据至 ${path.join(historyDir, `${timestamp}.json`)}`);
-  if (progressChanges.length) {
-    console.log(`当前周期进度变化的服务器: ${progressChanges.map(c => c.serverId).join(', ')}`);
-  } else {
-    console.log('当前周期无服务器进度变化');
-  }
+  console.log(`已同步最新数据 → ${publicFile}`);
+  ···
 }
-
-main();
