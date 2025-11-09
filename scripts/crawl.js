@@ -174,20 +174,21 @@ async function main() {
     }
   });
 
-   /* ---------- 3. 统一 GMT+8 时间 ---------- */
+     /* ---------- 统一 GMT+8 时间 ---------- */
   const now = moment().utcOffset(+8);
   const timestamp = now.format('YYYY-MM-DD-HH-mm');
 
-  /* ---------- 4. 写“干净”快照（供下次对比） ---------- */
+  /* 1. 历史快照 */
   fs.writeFileSync(path.join(historyDir, `${timestamp}.json`), JSON.stringify(currentData, null, 2));
 
-  /* ---------- 4½ 写 public/data.json（供网页） ---------- */
-  const publicDir = path.join(__dirname, '..', 'public');
-  if (!fs.existsSync(publicDir)) fs.mkdirSync(publicDir, { recursive: true });
+  /* 2. 网页用快照（新增） */
+  const publicDir  = path.resolve(__dirname, '..', 'public');
   const publicFile = path.join(publicDir, 'data.json');
+  if (!fs.existsSync(publicDir)) fs.mkdirSync(publicDir, { recursive: true });
   fs.writeFileSync(publicFile, JSON.stringify(currentData, null, 2));
+  console.log(`[INFO] 已同步最新数据 → ${publicFile}`);
 
-  /* ---------- 5. 写独立变化日志 ---------- */
+  /* 3. 变化日志 */
   if (progressChanges.length) {
     fs.writeFileSync(
       path.join(historyDir, `${timestamp}.changes.json`),
@@ -195,9 +196,8 @@ async function main() {
     );
   }
 
-  /* ---------- 6. 打印 ---------- */
+  /* 4. 打印 */
   console.log(`成功保存 ${currentData.length} 条数据至 ${path.join(historyDir, `${timestamp}.json`)}`);
-  console.log(`已同步最新数据 → ${publicFile}`);
   if (progressChanges.length) {
     console.log(`当前周期进度变化的服务器: ${progressChanges.map(c => c.serverId).join(', ')}`);
   } else {
