@@ -4,11 +4,7 @@
   <meta charset="UTF-8">
   <title>FF14 宇宙探索进度</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
-
-  <!-- 1. 引入 Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-
-  <!-- 2. 你的样式保持不动 -->
   <style>
     body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif;margin:0;padding:0;background:#f5f5f5;color:#333}
     h1{text-align:center;margin:16px 0}
@@ -18,12 +14,23 @@
     th,td{padding:8px 12px;text-align:left;font-size:14px}
     th{background:#fafafa;cursor:pointer;user-select:none}
     tr:nth-child(even){background:#fafafa}
-    input[type=search]{width:96%;max-width:480px;margin:0 auto 12px;display:block;padding:8px 12px;font-size:14px;border:1px solid #bbb;border-radius:4px}
+    input[type=search],.filter-row{width:96%;max-width:480px;margin:8px auto;display:block;padding:8px 12px;font-size:14px;border:1px solid #bbb;border-radius:4px}
+    .filter-row{display:flex;gap:8px}
+    select{flex:1;padding:6px 8px;font-size:14px;border:1px solid #ccc;border-radius:4px}
   </style>
 </head>
 <body>
 <h1>FF14 宇宙探索进度</h1>
+
+<!-- 搜索框 -->
 <input id="search" type="search" placeholder="🔍 搜索服务器 / 大区 / 数据中心">
+
+<!-- 三级下拉 -->
+<div class="filter-row">
+  <select id="selRegion"><option value="">全部大区</option></select>
+  <select id="selDC"><option value="">全部数据中心</option></select>
+  <select id="selServer"><option value="">全部服务器</option></select>
+</div>
 
 <table id="table">
   <thead>
@@ -41,37 +48,50 @@
 
 <script>
 /* ========== 配置 ========== */
-const DATA_URL = 'data.json';          // 同目录 JSON
-const REFRESH  = 5 * 60 * 1000;        // 自动刷新 5 min
-/* ========================== */
-
+const DATA_URL = 'data.json';
+const REFRESH  = 5 * 60 * 1000;
 let raw = [], sortKey = 'progress', asc = false;
 
-/* 初次加载 + 定时刷新 */
-fetchData();
-setInterval(fetchData, REFRESH);
-
+/* ========== 工具函数 ========== */
+const $ = id => document.getElementById(id);
 async function fetchData(){
   try{
     const res = await fetch(DATA_URL);
     raw = await res.json();
+    initSelect();
     render();
   }catch(e){ console.error(e); }
 }
 
-/* 渲染表格 */
+/* ========== 三级下拉初始化 ========== */
+const selR = $('selRegion'), selD = $('selDC'), selS = $('selServer');
+function initSelect(){
+  const regionSet = new Set(), dcSet = new Set(), serverSet = new Set();
+  raw.forEach(it => {
+    regionSet.add(it.region);
+    if(it.dc) dcSet.add(it.dc);
+    serverSet.add(it.server);
+  });
+  selR.innerHTML = '<option value="">全部大区</option>' + [...regionSet].sort().map(r => `<option value="${r}">${r}</option>`).join('');
+  selD.innerHTML = '<option value="">全部数据中心</option>' + [...dcSet].sort().map(d => `<option value="${d}">${d}</option>`).join('');
+  selS.innerHTML = '<option value="">全部服务器</option>' + [...serverSet].sort().map(s => `<option value="${s}">${s}</option>`).join('');
+}
+
+/* ========== 渲染 + 筛选 ========== */
 function render(){
-  const kw = document.getElementById('search').value.trim().toLowerCase();
+  const kw = $('search').value.trim().toLowerCase();
+  const r = selR.value, d = selD.value, s = selS.value;
   const tbody = document.querySelector('#table tbody');
   tbody.innerHTML = '';
 
-  /* 筛选 + 排序 */
   const list = raw
-    .filter(it => !kw || `${it.region}${it.dc||''}${it.server}`.toLowerCase().includes(kw))
-    .sort((a,b)=>{
-      const va = a[sortKey], vb = b[sortKey];
-      return (asc ? va > vb : va < vb) ? -1 : 1;
-    });
+    .filter(it =>
+      (!r || it.region === r) &&
+      (!d || (it.dc || '') === d) &&
+      (!s || it.server === s) &&
+      (!kw || `${it.region}${it.dc||''}${it.server}`.toLowerCase().includes(kw))
+    )
+    .sort((a,b)=>(asc?a[sortKey]>b[sortKey]:a[sortKey]<b[sortKey])?-1:1);
 
   list.forEach(it=>{
     const tr = document.createElement('tr');
@@ -91,10 +111,11 @@ function render(){
   });
 }
 
-/* 搜索框实时筛选 */
-document.getElementById('search').addEventListener('input', render);
-
-/* 表头点击排序 */
+/* ========== 事件绑定 ========== */
+$('search').addEventListener('input', render);
+selR.addEventListener('change', render);
+selD.addEventListener('change', render);
+selS.addEventListener('change', render);
 document.querySelectorAll('th[data-key]').forEach(th=>{
   th.addEventListener('click',()=>{
     const k = th.dataset.key;
@@ -103,93 +124,10 @@ document.querySelectorAll('th[data-key]').forEach(th=>{
     render();
   });
 });
-</script>
-  <!-- 三级下拉筛选 -->
-<div style="width:96%;max-width:480px;margin:12px auto;display:flex;gap:8px">
-  <select id="selRegion"><option value="">全部大区</option></select>
-  <select id="selDC"><option value="">全部数据中心</option></select>
-  <select id="selServer"><option value="">全部服务器</option></select>
-</div>
 
-<script>
-/* ============== 三级下拉初始化 ============== */
-const selR = document.getElementById('selRegion');
-const selD = document.getElementById('selDC');
-const selS = document.getElementById('selServer');
-
-let regionSet = new Set(), dcSet = new Set(), serverSet = new Set();
-
-function initSelect() {
-  regionSet.clear(); dcSet.clear(); serverSet.clear();
-  raw.forEach(it => {
-    regionSet.add(it.region);
-    if (it.dc) dcSet.add(it.dc);
-    serverSet.add(it.server);
-  });
-  // 填充大区
-  selR.innerHTML = '<option value="">全部大区</option>';
-  [...regionSet].sort().forEach(r => selR.innerHTML += `<option value="${r}">${r}</option>`);
-  // 填充数据中心
-  selD.innerHTML = '<option value="">全部数据中心</option>';
-  [...dcSet].sort().forEach(d => selD.innerHTML += `<option value="${d}">${d}</option>`);
-  // 填充服务器
-  selS.innerHTML = '<option value="">全部服务器</option>';
-  [...serverSet].sort().forEach(s => selS.innerHTML += `<option value="${s}">${s}</option>`);
-}
-
-/* ============== 实时筛选 ============== */
-function filterTable() {
-  const r = selR.value, d = selD.value, s = selS.value;
-  const kw = document.getElementById('search').value.trim().toLowerCase();
-  const tbody = document.querySelector('#table tbody');
-  tbody.innerHTML = '';
-
-  const list = raw
-    .filter(it =>
-      (!r || it.region === r) &&
-      (!d || (it.dc || '') === d) &&
-      (!s || it.server === s) &&
-      (!kw || `${it.region}${it.dc||''}${it.server}`.toLowerCase().includes(kw))
-    )
-    .sort((a, b) => (asc ? a[sortKey] > b[sortKey] : a[sortKey] < b[sortKey]) ? -1 : 1);
-
-  list.forEach(it => {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td>${it.region}</td>
-      <td>${it.dc||'-'}</td>
-      <td>${it.server}</td>
-      <td>
-        <div class="bar" title="${it.progress}%">
-          <div class="bar-inner" style="width:${it.progress}%"></div>
-        </div>
-        <span>${it.progress}%</span>
-      </td>
-      <td>${it.level}</td>
-      <td>${it.lastUpdate}</td>`;
-    tbody.appendChild(tr);
-  });
-}
-
-/* ============== 事件绑定 ============== */
-selR.addEventListener('change', filterTable);
-selD.addEventListener('change', filterTable);
-selS.addEventListener('change', filterTable);
-document.getElementById('search').addEventListener('input', filterTable);
-document.querySelectorAll('th[data-key]').forEach(th => {
-  th.addEventListener('click', () => {
-    const k = th.dataset.key;
-    if (sortKey === k) asc = !asc;
-    else { sortKey = k; asc = false; }
-    filterTable();
-  });
-});
-
-/* ============== 首次渲染 ============== */
-fetchData().then(() => {
-  initSelect();
-  filterTable();
-});
+/* ========== 启动 ========== */
+fetchData();
+setInterval(fetchData, REFRESH);
 </script>
 </body>
 </html>
