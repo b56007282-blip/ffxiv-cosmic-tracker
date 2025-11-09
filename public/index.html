@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>FF14 宇宙探索进度</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif;margin:0;padding:0;background:#f5f5f5;color:#333}
+h1{text-align:center;margin:16px 0}
+.bar{height:18px;background:#e0e0e0;border-radius:4px;overflow:hidden}
+.bar-inner{height:100%;background:linear-gradient(90deg,#4caf50 0%,#8bc34a 100%);transition:width .3s}
+table{width:96%;margin:0 auto;border-collapse:collapse;background:#fff;box-shadow:0 2px 4px rgba(0,0,0,.1)}
+th,td{padding:8px 12px;text-align:left;font-size:14px}
+th{background:#fafafa;cursor:pointer;user-select:none}
+tr:nth-child(even){background:#fafafa}
+input[type=search]{width:96%;max-width:480px;margin:0 auto 12px;display:block;padding:8px 12px;font-size:14px;border:1px solid #bbb;border-radius:4px}
+</style>
+</head>
+<body>
+<h1>FF14 宇宙探索进度</h1>
+<input id="search" type="search" placeholder="🔍 搜索服务器 / 大区 / 数据中心">
+
+<table id="table">
+  <thead>
+    <tr>
+      <th data-key="region">大区</th>
+      <th data-key="dc">数据中心</th>
+      <th data-key="server">服务器</th>
+      <th data-key="progress">进度</th>
+      <th data-key="level">等级</th>
+      <th data-key="lastUpdate">更新时间</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+<script>
+/* ========== 配置 ========== */
+const DATA_URL = 'data.json';          // 同目录 JSON
+const REFRESH  = 5 * 60 * 1000;        // 自动刷新 5 min
+/* ========================== */
+
+let raw = [], sortKey = 'progress', asc = false;
+
+/* 初次加载 + 定时刷新 */
+fetchData();
+setInterval(fetchData, REFRESH);
+
+async function fetchData(){
+  try{
+    const res = await fetch(DATA_URL);
+    raw = await res.json();
+    render();
+  }catch(e){ console.error(e); }
+}
+
+/* 渲染表格 */
+function render(){
+  const kw = document.getElementById('search').value.trim().toLowerCase();
+  const tbody = document.querySelector('#table tbody');
+  tbody.innerHTML = '';
+
+  /* 筛选 + 排序 */
+  const list = raw
+    .filter(it => !kw || `${it.region}${it.dc||''}${it.server}`.toLowerCase().includes(kw))
+    .sort((a,b)=>{
+      const va = a[sortKey], vb = b[sortKey];
+      return (asc ? va > vb : va < vb) ? -1 : 1;
+    });
+
+  list.forEach(it=>{
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${it.region}</td>
+      <td>${it.dc||'-'}</td>
+      <td>${it.server}</td>
+      <td>
+        <div class="bar" title="${it.progress}%">
+          <div class="bar-inner" style="width:${it.progress}%"></div>
+        </div>
+        <span>${it.progress}%</span>
+      </td>
+      <td>${it.level}</td>
+      <td>${it.lastUpdate}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+/* 搜索框实时筛选 */
+document.getElementById('search').addEventListener('input', render);
+
+/* 表头点击排序 */
+document.querySelectorAll('th[data-key]').forEach(th=>{
+  th.addEventListener('click',()=>{
+    const k = th.dataset.key;
+    if(sortKey === k) asc = !asc;
+    else { sortKey = k; asc = false; }
+    render();
+  });
+});
+</script>
+</body>
+</html>
