@@ -104,5 +104,92 @@ document.querySelectorAll('th[data-key]').forEach(th=>{
   });
 });
 </script>
+  <!-- 三级下拉筛选 -->
+<div style="width:96%;max-width:480px;margin:12px auto;display:flex;gap:8px">
+  <select id="selRegion"><option value="">全部大区</option></select>
+  <select id="selDC"><option value="">全部数据中心</option></select>
+  <select id="selServer"><option value="">全部服务器</option></select>
+</div>
+
+<script>
+/* ============== 三级下拉初始化 ============== */
+const selR = document.getElementById('selRegion');
+const selD = document.getElementById('selDC');
+const selS = document.getElementById('selServer');
+
+let regionSet = new Set(), dcSet = new Set(), serverSet = new Set();
+
+function initSelect() {
+  regionSet.clear(); dcSet.clear(); serverSet.clear();
+  raw.forEach(it => {
+    regionSet.add(it.region);
+    if (it.dc) dcSet.add(it.dc);
+    serverSet.add(it.server);
+  });
+  // 填充大区
+  selR.innerHTML = '<option value="">全部大区</option>';
+  [...regionSet].sort().forEach(r => selR.innerHTML += `<option value="${r}">${r}</option>`);
+  // 填充数据中心
+  selD.innerHTML = '<option value="">全部数据中心</option>';
+  [...dcSet].sort().forEach(d => selD.innerHTML += `<option value="${d}">${d}</option>`);
+  // 填充服务器
+  selS.innerHTML = '<option value="">全部服务器</option>';
+  [...serverSet].sort().forEach(s => selS.innerHTML += `<option value="${s}">${s}</option>`);
+}
+
+/* ============== 实时筛选 ============== */
+function filterTable() {
+  const r = selR.value, d = selD.value, s = selS.value;
+  const kw = document.getElementById('search').value.trim().toLowerCase();
+  const tbody = document.querySelector('#table tbody');
+  tbody.innerHTML = '';
+
+  const list = raw
+    .filter(it =>
+      (!r || it.region === r) &&
+      (!d || (it.dc || '') === d) &&
+      (!s || it.server === s) &&
+      (!kw || `${it.region}${it.dc||''}${it.server}`.toLowerCase().includes(kw))
+    )
+    .sort((a, b) => (asc ? a[sortKey] > b[sortKey] : a[sortKey] < b[sortKey]) ? -1 : 1);
+
+  list.forEach(it => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${it.region}</td>
+      <td>${it.dc||'-'}</td>
+      <td>${it.server}</td>
+      <td>
+        <div class="bar" title="${it.progress}%">
+          <div class="bar-inner" style="width:${it.progress}%"></div>
+        </div>
+        <span>${it.progress}%</span>
+      </td>
+      <td>${it.level}</td>
+      <td>${it.lastUpdate}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+/* ============== 事件绑定 ============== */
+selR.addEventListener('change', filterTable);
+selD.addEventListener('change', filterTable);
+selS.addEventListener('change', filterTable);
+document.getElementById('search').addEventListener('input', filterTable);
+document.querySelectorAll('th[data-key]').forEach(th => {
+  th.addEventListener('click', () => {
+    const k = th.dataset.key;
+    if (sortKey === k) asc = !asc;
+    else { sortKey = k; asc = false; }
+    filterTable();
+  });
+});
+
+/* ============== 首次渲染 ============== */
+fetchData().then(() => {
+  initSelect();
+  filterTable();
+});
+</script>
 </body>
 </html>
