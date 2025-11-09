@@ -154,40 +154,42 @@ async function main() {
     return;
   }
 
-  const lastData = getLastHistoryData();
+  /* ---------- 1. 读取“干净”的上一次快照 ---------- */
+  const lastData = getLastHistoryData(); // 只含服务器数组，不含 changes
 
-  // 计算当前周期变化
+  /* ---------- 2. 计算本次变化（仅对比当前周期） ---------- */
   const progressChanges = [];
+  const mapLast = new Map(lastData.map(s => [`${s.region}-${s.server}`, s.progress]));
+
   currentData.forEach(cur => {
-    const id = `${cur.region}-${cur.server}`;
-    const last = lastData.find(item => `${item.region}-${item.server}` === id);
-    if (last && last.progress !== cur.progress) {
+    const k = `${cur.region}-${cur.server}`;
+    const old = mapLast.get(k);
+    if (old !== undefined && old !== cur.progress) {
       progressChanges.push({
-        serverId: id,
-        oldProgress: last.progress,
+        serverId: k,
+        oldProgress: old,
         newProgress: cur.progress,
         changeTime: moment().utcOffset(+8).format('YYYY-MM-DD HH:mm:ss')
       });
     }
   });
 
-  /*  关键修复：同一 Moment 实例，统一 GMT+8   */
-  const now       = moment().utcOffset(+8);          // 只用这一次
-  const timestamp = now.format('YYYY-MM-DD-HH-mm');  // 文件名
-  const logTime   = now.format('YYYY-MM-DD HH:mm:ss'); // 日志用
+  /* ---------- 3. 统一 GMT+8 时间 ---------- */
+  const now = moment().utcOffset(+8);
+  const timestamp = now.format('YYYY-MM-DD-HH-mm');
 
-  // 1) 只保存“干净”的服务器快照
+  /* ---------- 4. 写“干净”快照（供下次对比） ---------- */
   fs.writeFileSync(path.join(historyDir, `${timestamp}.json`), JSON.stringify(currentData, null, 2));
 
-  // 2) 变化信息单独写日志（可选）
+  /* ---------- 5. 写独立变化日志（不混入快照） ---------- */
   if (progressChanges.length) {
     fs.writeFileSync(
       path.join(historyDir, `${timestamp}.changes.json`),
-      JSON.stringify({ type: 'progress_changes', count: progressChanges.length, changes: progressChanges, timestamp: logTime }, null, 2)
+      JSON.stringify({ type: 'progress_changes', count: progressChanges.length, changes: progressChanges }, null, 2)
     );
   }
 
-  // ---- 打印结果 ----
+  /* ---------- 6. 打印 ---------- */
   console.log(`成功保存 ${currentData.length} 条数据至 ${path.join(historyDir, `${timestamp}.json`)}`);
   if (progressChanges.length) {
     console.log(`当前周期进度变化的服务器: ${progressChanges.map(c => c.serverId).join(', ')}`);
