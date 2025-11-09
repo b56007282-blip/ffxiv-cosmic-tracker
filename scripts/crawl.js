@@ -162,21 +162,28 @@ async function main() {
     const id = `${cur.region}-${cur.server}`;
     const last = lastData.find(item => `${item.region}-${item.server}` === id);
     if (last && last.progress !== cur.progress) {
-      progressChanges.push({ serverId: id, oldProgress: last.progress, newProgress: cur.progress, changeTime: new Date().toISOString() });
+      progressChanges.push({
+        serverId: id,
+        oldProgress: last.progress,
+        newProgress: cur.progress,
+        changeTime: moment().utcOffset(+8).format('YYYY-MM-DD HH:mm:ss')
+      });
     }
   });
 
-  // ---- 关键：分开写文件 ----
-  const timestamp = moment().utcOffset(+8).format('YYYY-MM-DD-HH-mm'); // GMT+8 24h
+  /*  关键修复：同一 Moment 实例，统一 GMT+8   */
+  const now       = moment().utcOffset(+8);          // 只用这一次
+  const timestamp = now.format('YYYY-MM-DD-HH-mm');  // 文件名
+  const logTime   = now.format('YYYY-MM-DD HH:mm:ss'); // 日志用
 
-  // 1) 只保存“干净”的服务器快照，作为下次历史
+  // 1) 只保存“干净”的服务器快照
   fs.writeFileSync(path.join(historyDir, `${timestamp}.json`), JSON.stringify(currentData, null, 2));
 
-  // 2) 变化信息单独写日志（可选，不影响下次）
+  // 2) 变化信息单独写日志（可选）
   if (progressChanges.length) {
     fs.writeFileSync(
       path.join(historyDir, `${timestamp}.changes.json`),
-      JSON.stringify({ type: 'progress_changes', count: progressChanges.length, changes: progressChanges }, null, 2)
+      JSON.stringify({ type: 'progress_changes', count: progressChanges.length, changes: progressChanges, timestamp: logTime }, null, 2)
     );
   }
 
