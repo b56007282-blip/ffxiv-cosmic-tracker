@@ -1,54 +1,60 @@
-const axios = require('axios');
+#!/usr/bin/env node
+/**
+ * FFXIV 宇宙探索进度爬虫
+ * 用法：node crawl.js
+ */
+const axios   = require('axios');
 const cheerio = require('cheerio');
-const fs = require('fs');
-const path = require('path');
-const moment = require('moment');
+const fs      = require('fs');
+const path    = require('path');
+const moment  = require('moment');
 
-/* -------------- 基础目录 -------------- */
-const historyDir = path.join(__dirname, '../data/history');
-const publicDir  = path.resolve(__dirname, '..', 'public');
-if (!fs.existsSync(historyDir)) fs.mkdirSync(historyDir, { recursive: true });
-if (!fs.existsSync(publicDir))  fs.mkdirSync(publicDir, { recursive: true });
+/* ====== 1. 目录初始化（基于仓库根）====== */
+const repoRoot   = path.resolve(__dirname, '..');
+const historyDir = path.join(repoRoot, 'data', 'history');
+const publicDir  = path.join(repoRoot, 'public');
+const publicFile = path.join(publicDir, 'data.json');
+fs.mkdirSync(historyDir, { recursive: true });
+fs.mkdirSync(publicDir,  { recursive: true });
 
-/* -------------- 国服抓取 -------------- */
-async function crawlCN() {
+/* ====== 2. 工具：GMT+8 时间 ====== */
+const now8 = () => moment().utcOffset(+8);
+
+/* ====== 3. 国服抓取 ====== */
+async function fetchCN() {
   try {
-    const res = await axios.get('https://ff14act.web.sdo.com/api/cosmicData/getCosmicData', {
-      headers: {
-        Accept: 'application/json, text/plain, */*',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-      },
+    const { data } = await axios.get('https://ff14act.web.sdo.com/api/cosmicData/getCosmicData', {
+      headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' },
       params: { t: Date.now() },
       timeout: 15000
     });
-    if (res.data?.code !== 10000 || !Array.isArray(res.data.data) || res.data.data.length === 0) return [];
-    return res.data.data.map(item => ({
-      region: item.area_name || '国服',
-      server: item.group_name || '未知服务器',
-      progress: Math.min(Math.max(parseInt(item.ProgressRate || 0) / 10, 0), 100),
-      level: parseInt(item.DevelopmentGrade || 0),
-      lastUpdate: item.data_time || moment().utcOffset(+8).format('YYYY-MM-DD HH:mm:ss'),
-      source: 'cn',
-      timestamp: new Date().toISOString()
+    if (data?.code !== 10000 || !Array.isArray(data.data) || data.data.length === 0) return [];
+    return data.data.map(it => ({
+      region: it.area_name || '国服',
+      server: it.group_name || '未知服务器',
+      progress: Math.min(Math.max(parseInt(it.ProgressRate || 0) / 10, 0), 100),
+      level: parseInt(it.DevelopmentGrade || 0),
+      lastUpdate: it.data_time || now8().format('YYYY-MM-DD HH:mm:ss'),
+      source: 'cn'
     }));
   } catch (e) {
-    console.error('国服爬取失败:', e.message);
+    console.error('[CN] 抓取失败:', e.message);
     return [];
   }
 }
 
-/* -------------- 国际服抓取 -------------- */
-async function crawlNA() {
+/* ====== 4. 国际服抓取 ====== */
+async function fetchNA() {
   try {
-    const res = await axios.get('https://na.finalfantasyxiv.com/lodestone/cosmic_exploration/report/', {
+    const { data: html } = await axios.get('https://na.finalfantasyxiv.com/lodestone/cosmic_exploration/report/', {
       headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' },
       timeout: 20000
     });
-    const $ = cheerio.load(res.data);
+    const $ = cheerio.load(html);
     const servers = [];
-    $('.cosmic__report__card').each((i, el) => {
-      const serverName = $(el).find('.cosmic__report__card__name p').text().trim();
-      if (!serverName) return;
+    $('.cosmic__report__card').each((_, el) => {
+      const name = $(el).find('.cosmic__report__card__name p').text().trim();
+      if (!name) return;
       let progress = 0;
       if ($(el).hasClass('completed')) progress = 100;
       else {
@@ -56,75 +62,78 @@ async function crawlNA() {
         if (m) progress = Math.round((parseInt(m[1], 10) / 8) * 100 * 10) / 10;
       }
       const level = parseInt($(el).find('.cosmic__report__grade__level p').text().trim() || 0);
-      const dcTitle = $(el).closest('.cosmic__report__dc').find('.cosmic__report__dc__title').text().trim();
-      const naDCs = ['Aether', 'Crystal', 'Dynamis', 'Primal'];
-      const euDCs = ['Chaos', 'Light'];
-      const ocDCs = ['Materia'];
-      const jpDCs = ['Elemental', 'Gaia', 'Mana', 'Meteor'];
-      let region = '国际服-未知区域';
-      if (naDCs.includes(dcTitle)) region = '国际服-北美';
-      else if (euDCs.includes(dcTitle)) region = '国际服-欧洲';
-      else if (ocDCs.includes(dcTitle)) region = '国际服-大洋洲';
-      else if (jpDCs.includes(dcTitle)) region = '国际服-日本';
-      servers.push({ region, server: serverName, dc: dcTitle, progress, level, lastUpdate: moment().utcOffset(+8).format('YYYY-MM-DD HH:mm:ss'), source: 'na', timestamp: new Date().toISOString() });
+      const dc = $(el).closest('.cosmic__report__dc').find('.cosmic__report__dc__title').text().trim();
+      const regionMap = { Aether: '国际服-北美', Crystal: '国际服-北美', Dynamis: '国际服-北美', Primal: '国际服-北美',
+                          Chaos: '国际服-欧洲', Light: '国际服-欧洲', Materia: '国际服-大洋洲',
+                          Elemental: '国际服-日本', Gaia: '国际服-日本', Mana: '国际服-日本', Meteor: '国际服-日本' };
+      servers.push({
+        region: regionMap[dc] || '国际服-未知区域',
+        server: name,
+        dc,
+        progress,
+        level,
+        lastUpdate: now8().format('YYYY-MM-DD HH:mm:ss'),
+        source: 'na'
+      });
     });
     return servers;
   } catch (e) {
-    console.error('国际服爬取失败:', e.message);
+    console.error('[NA] 抓取失败:', e.message);
     return [];
   }
 }
 
-/* -------------- 读取“干净”快照 -------------- */
-function getLastHistoryData() {
+/* ====== 5. 读取上一份“干净”快照 ====== */
+function loadLastSnap() {
   try {
     const files = fs.readdirSync(historyDir)
       .filter(f => f.endsWith('.json') && !f.endsWith('.changes.json'))
-      .map(f => ({ name: f, time: new Date(f.replace('.json', '').replace(/-/g, ' ')) }))
+      .map(f => ({ name: f, time: new Date(f.slice(0, -5).replace(/-/g, ' ')) }))
       .sort((a, b) => b.time - a.time);
-    if (files.length) {
-      const arr = JSON.parse(fs.readFileSync(path.join(historyDir, files[0].name), 'utf8'));
-      // 只保留「服务器数据」：必须有 source 字段
-      return Array.isArray(arr) ? arr.filter(item => item.source) : [];
-    }
-  } catch (e) { console.error('读取历史失败:', e.message); }
-  return [];
+    if (!files.length) return new Map();
+    const arr = JSON.parse(fs.readFileSync(path.join(historyDir, files[0].name), 'utf8'));
+    // 只保留服务器数据（有 source 字段）
+    return new Map(arr.filter(it => it.source).map(it => [`${it.region}-${it.server}`, it.progress]));
+  } catch (e) {
+    console.warn('读取历史快照失败:', e.message);
+    return new Map();
+  }
 }
 
-/* -------------- 主函数 -------------- */
-async function main() {
-  const [cn, na] = await Promise.all([crawlCN(), crawlNA()]);
+/* ====== 6. 主流程 ====== */
+(async () => {
+  const [cn, na] = await Promise.all([fetchCN(), fetchNA()]);
   const current = [...cn, ...na];
-  if (!current.length) { console.log('未获取到任何有效数据'); return; }
+  if (!current.length) { console.log('未获取到任何数据'); return; }
 
-  /* 1. 上一周期快照 → Map */
-  const lastMap = new Map(getLastHistoryData().map(s => [`${s.region}-${s.server}`, s.progress]));
-
-  /* 2. 本次变化（仅当前周期）*/
+  /* 6.1 计算本次变化 */
+  const lastMap = loadLastSnap();
   const changes = [];
-  current.forEach(c => {
-    const k = `${c.region}-${c.server}`;
-    const old = lastMap.get(k);
-    if (old !== undefined && old !== c.progress) changes.push({
-      serverId: k, oldProgress: old, newProgress: c.progress,
-      changeTime: moment().utcOffset(+8).format('YYYY-MM-DD HH:mm:ss')
+  current.forEach(it => {
+    const key = `${it.region}-${it.server}`;
+    const old = lastMap.get(key);
+    if (old !== undefined && old !== it.progress) changes.push({
+      serverId: key, oldProgress: old, newProgress: it.progress,
+      changeTime: now8().format('YYYY-MM-DD HH:mm:ss')
     });
   });
 
-  /* 3. 写文件 */
-  const ts = moment().utcOffset(+8).format('YYYY-MM-DD-HH-mm');
+  /* 6.2 写文件 */
+  const ts = now8().format('YYYY-MM-DD-HH-mm');
+  // ① 干净快照（供下次对比）
   fs.writeFileSync(path.join(historyDir, `${ts}.json`), JSON.stringify(current, null, 2));
-  const publicFile = path.join(publicDir, 'data.json');
+  // ② 网页用
   fs.writeFileSync(publicFile, JSON.stringify(current, null, 2));
-  if (changes.length) fs.writeFileSync(
-    path.join(historyDir, `${ts}.changes.json`),
-    JSON.stringify({ type: 'progress_changes', count: changes.length, changes }, null, 2)
-  );
+  // ③ 变化日志（仅本次）
+  if (changes.length) {
+    fs.writeFileSync(
+      path.join(historyDir, `${ts}.changes.json`),
+      JSON.stringify({ type: 'progress_changes', count: changes.length, changes }, null, 2)
+    );
+  }
 
-  /* 4. 日志 */
+  /* 6.3 日志 */
   console.log(`保存 ${current.length} 条数据 → ${ts}.json & public/data.json`);
   if (changes.length) console.log(`本次变化: ${changes.map(c => c.serverId).join(', ')}`);
   else console.log('本次无变化');
-}
-
-main();
+})();
