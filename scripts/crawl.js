@@ -10,13 +10,6 @@ if (!fs.existsSync(historyDir)) {
   fs.mkdirSync(historyDir, { recursive: true });
 }
 
-// 请求头配置
-const headers = {
-  'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-  Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-  'Accept-Language': 'zh-CN,zh;q=0.9'
-};
-
 //============================== 国服 ==============================
 async function crawlCN() {
   try {
@@ -59,7 +52,7 @@ async function crawlCN() {
         server: item.group_name || '未知服务器',
         progress: Math.min(Math.max(raw / 10, 0), 100),
         level: parseInt(item.DevelopmentGrade || 0),
-        lastUpdate: item.data_time || moment().format('YYYY-MM-DD HH:mm:ss'),
+        lastUpdate: item.data_time || moment().utcOffset(+8).format('YYYY-MM-DD HH:mm:ss'),
         source: 'cn',
         timestamp: new Date().toISOString()
       };
@@ -113,7 +106,16 @@ async function crawlNA() {
       else if (ocDCs.includes(dcTitle)) region = '国际服-大洋洲';
       else if (jpDCs.includes(dcTitle)) region = '国际服-日本';
 
-      servers.push({ region, server: serverName, dc: dcTitle, progress, level, lastUpdate: moment().format('YYYY-MM-DD HH:mm:ss'), source: 'na', timestamp: new Date().toISOString() });
+      servers.push({
+        region,
+        server: serverName,
+        dc: dcTitle,
+        progress,
+        level,
+        lastUpdate: moment().utcOffset(+8).format('YYYY-MM-DD HH:mm:ss'),
+        source: 'na',
+        timestamp: new Date().toISOString()
+      });
     });
 
     console.log(`国际服成功爬取 ${servers.length} 条数据`);
@@ -129,13 +131,13 @@ function getLastHistoryData() {
   try {
     const files = fs
       .readdirSync(historyDir)
-      .filter(f => f.endsWith('.json') && !f.endsWith('.changes.json')) // 排除变化日志
+      .filter(f => f.endsWith('.json') && !f.endsWith('.changes.json'))
       .map(f => ({ name: f, time: new Date(f.replace('.json', '').replace(/-/g, ' ')) }))
       .sort((a, b) => b.time - a.time);
 
     if (files.length) {
       const raw = JSON.parse(fs.readFileSync(path.join(historyDir, files[0].name), 'utf8'));
-      return Array.isArray(raw) ? raw : []; // 确保返回数组
+      return Array.isArray(raw) ? raw : [];
     }
   } catch (e) {
     console.error('读取历史数据失败:', e.message);
@@ -164,8 +166,8 @@ async function main() {
     }
   });
 
-  // ---- 关键改动：分开写文件 ----
-  const timestamp = moment().format('YYYY-MM-DD-HH-mm');
+  // ---- 关键：分开写文件 ----
+  const timestamp = moment().utcOffset(+8).format('YYYY-MM-DD-HH-mm'); // GMT+8 24h
 
   // 1) 只保存“干净”的服务器快照，作为下次历史
   fs.writeFileSync(path.join(historyDir, `${timestamp}.json`), JSON.stringify(currentData, null, 2));
