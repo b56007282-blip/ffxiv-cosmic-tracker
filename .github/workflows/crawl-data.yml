@@ -20,7 +20,7 @@ jobs:
       - name: 设置Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+            node-version: '20'
 
       - name: 安装依赖
         run: |
@@ -28,16 +28,10 @@ jobs:
           npm init -y --prefix scripts
           npm install axios cheerio moment --prefix scripts
 
-      # ① 清空旧历史（保留目录）
-      - name: 清空旧历史快照（防止反复对比旧数据）
-        run: |
-          rm -f data/history/*.json
-          touch data/history/.gitkeep
-
-      # ② 删除旧变化日志
+      # 只删除旧变化日志，绝不删除历史快照
       - name: 清理旧变化日志（防止重复对比）
         run: |
-          find data/history -name "*.changes.json" -delete || true
+          find data/history -name "*-changes.json" -delete || true
 
       - name: 执行爬取脚本
         run: node ./scripts/crawl.js
@@ -47,4 +41,4 @@ jobs:
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
           git add data/history/ public/data.json
-          git diff --cached --quiet || (git commit -m "auto: clean slate & fresh snapshot" && git push origin main --force-with-lease)
+          git diff --cached --quiet || (git commit -m "auto: update data & public" && git push origin main --force-with-lease)
