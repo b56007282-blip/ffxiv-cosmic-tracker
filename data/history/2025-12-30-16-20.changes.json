@@ -1,0 +1,54 @@
+{
+  "type": "progress_changes",
+  "count": 8,
+  "changes": [
+    {
+      "serverId": "国际服-北美-Cuchulainn",
+      "oldProgress": 87.5,
+      "newProgress": 100,
+      "changeTime": "2025-12-30 16:20:39"
+    },
+    {
+      "serverId": "国际服-北美-Golem",
+      "oldProgress": 87.5,
+      "newProgress": 100,
+      "changeTime": "2025-12-30 16:20:39"
+    },
+    {
+      "serverId": "国际服-北美-Kraken",
+      "oldProgress": 87.5,
+      "newProgress": 100,
+      "changeTime": "2025-12-30 16:20:39"
+    },
+    {
+      "serverId": "国际服-北美-Rafflesia",
+      "oldProgress": 87.5,
+      "newProgress": 100,
+      "changeTime": "2025-12-30 16:20:39"
+    },
+    {
+      "serverId": "国际服-大洋洲-Bismarck",
+      "oldProgress": 87.5,
+      "newProgress": 100,
+      "changeTime": "2025-12-30 16:20:39"
+    },
+    {
+      "serverId": "国际服-大洋洲-Sephirot",
+      "oldProgress": 87.5,
+      "newProgress": 100,
+      "changeTime": "2025-12-30 16:20:39"
+    },
+    {
+      "serverId": "国际服-大洋洲-Sophia",
+      "oldProgress": 87.5,
+      "newProgress": 100,
+      "changeTime": "2025-12-30 16:20:39"
+    },
+    {
+      "serverId": "国际服-大洋洲-Zurvan",
+      "oldProgress": 87.5,
+      "newProgress": 100,
+      "changeTime": "2025-12-30 16:20:39"
+    }
+  ]
+}
