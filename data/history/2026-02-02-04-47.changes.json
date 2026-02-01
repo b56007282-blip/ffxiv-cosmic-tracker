@@ -1,0 +1,672 @@
+{
+  "type": "progress_changes",
+  "count": 111,
+  "changes": [
+    {
+      "serverId": "陆行鸟-拉诺西亚",
+      "oldProgress": 100,
+      "newProgress": 0,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "莫古力-神拳痕",
+      "oldProgress": 25,
+      "newProgress": 12.5,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "莫古力-白银乡",
+      "oldProgress": 25,
+      "newProgress": 12.5,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "莫古力-白金幻象",
+      "oldProgress": 37.5,
+      "newProgress": 12.5,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "莫古力-旅人栈桥",
+      "oldProgress": 0,
+      "newProgress": 25,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "莫古力-拂晓之间",
+      "oldProgress": 25,
+      "newProgress": 12.5,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "莫古力-龙巢神殿",
+      "oldProgress": 37.5,
+      "newProgress": 50,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "莫古力-梦羽宝境",
+      "oldProgress": 87.5,
+      "newProgress": 25,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "猫小胖-紫水栈桥",
+      "oldProgress": 100,
+      "newProgress": 25,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "猫小胖-延夏",
+      "oldProgress": 50,
+      "newProgress": 87.5,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "猫小胖-静语庄园",
+      "oldProgress": 100,
+      "newProgress": 12.5,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "陆行鸟-幻影群岛",
+      "oldProgress": 50,
+      "newProgress": 25,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "猫小胖-海猫茶屋",
+      "oldProgress": 100,
+      "newProgress": 12.5,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "猫小胖-柔风海湾",
+      "oldProgress": 37.5,
+      "newProgress": 12.5,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "猫小胖-琥珀原",
+      "oldProgress": 50,
+      "newProgress": 12.5,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "豆豆柴-水晶塔",
+      "oldProgress": 0,
+      "newProgress": 50,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "豆豆柴-银泪湖",
+      "oldProgress": 62.5,
+      "newProgress": 12.5,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "豆豆柴-伊修加德",
+      "oldProgress": 75,
+      "newProgress": 0,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "豆豆柴-红茶川",
+      "oldProgress": 25,
+      "newProgress": 12.5,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "陆行鸟-神意之地",
+      "oldProgress": 87.5,
+      "newProgress": 37.5,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "陆行鸟-萌芽池",
+      "oldProgress": 100,
+      "newProgress": 0,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "陆行鸟-红玉海",
+      "oldProgress": 62.5,
+      "newProgress": 25,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "陆行鸟-宇宙和音",
+      "oldProgress": 100,
+      "newProgress": 37.5,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "陆行鸟-沃仙曦染",
+      "oldProgress": 100,
+      "newProgress": 75,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "陆行鸟-晨曦王座",
+      "oldProgress": 100,
+      "newProgress": 12.5,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "莫古力-潮风亭",
+      "oldProgress": 25,
+      "newProgress": 37.5,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-北美-Adamantoise",
+      "oldProgress": 100,
+      "newProgress": 12.5,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-北美-Cactuar",
+      "oldProgress": 100,
+      "newProgress": 0,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-北美-Faerie",
+      "oldProgress": 100,
+      "newProgress": 25,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-北美-Gilgamesh",
+      "oldProgress": 100,
+      "newProgress": 37.5,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-北美-Jenova",
+      "oldProgress": 100,
+      "newProgress": 75,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-北美-Midgardsormr",
+      "oldProgress": 100,
+      "newProgress": 50,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-北美-Sargatanas",
+      "oldProgress": 100,
+      "newProgress": 87.5,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-北美-Siren",
+      "oldProgress": 100,
+      "newProgress": 75,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-北美-Balmung",
+      "oldProgress": 100,
+      "newProgress": 50,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-北美-Brynhildr",
+      "oldProgress": 100,
+      "newProgress": 25,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-北美-Coeurl",
+      "oldProgress": 100,
+      "newProgress": 12.5,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-北美-Diabolos",
+      "oldProgress": 100,
+      "newProgress": 37.5,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-北美-Goblin",
+      "oldProgress": 100,
+      "newProgress": 87.5,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-北美-Malboro",
+      "oldProgress": 100,
+      "newProgress": 0,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-北美-Mateus",
+      "oldProgress": 100,
+      "newProgress": 12.5,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-北美-Zalera",
+      "oldProgress": 100,
+      "newProgress": 12.5,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-北美-Cuchulainn",
+      "oldProgress": 87.5,
+      "newProgress": 0,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-北美-Golem",
+      "oldProgress": 87.5,
+      "newProgress": 0,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-北美-Halicarnassus",
+      "oldProgress": 100,
+      "newProgress": 12.5,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-北美-Kraken",
+      "oldProgress": 87.5,
+      "newProgress": 0,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-北美-Maduin",
+      "oldProgress": 100,
+      "newProgress": 12.5,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-北美-Marilith",
+      "oldProgress": 100,
+      "newProgress": 0,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-北美-Rafflesia",
+      "oldProgress": 87.5,
+      "newProgress": 0,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-北美-Seraph",
+      "oldProgress": 100,
+      "newProgress": 62.5,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-北美-Behemoth",
+      "oldProgress": 100,
+      "newProgress": 75,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-北美-Excalibur",
+      "oldProgress": 100,
+      "newProgress": 37.5,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-北美-Exodus",
+      "oldProgress": 100,
+      "newProgress": 25,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-北美-Famfrit",
+      "oldProgress": 100,
+      "newProgress": 50,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-北美-Hyperion",
+      "oldProgress": 100,
+      "newProgress": 37.5,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-北美-Lamia",
+      "oldProgress": 100,
+      "newProgress": 37.5,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-北美-Leviathan",
+      "oldProgress": 100,
+      "newProgress": 87.5,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-北美-Ultros",
+      "oldProgress": 100,
+      "newProgress": 25,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-欧洲-Cerberus",
+      "oldProgress": 100,
+      "newProgress": 75,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-欧洲-Louisoix",
+      "oldProgress": 100,
+      "newProgress": 87.5,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-欧洲-Moogle",
+      "oldProgress": 100,
+      "newProgress": 62.5,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-欧洲-Omega",
+      "oldProgress": 100,
+      "newProgress": 37.5,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-欧洲-Phantom",
+      "oldProgress": 100,
+      "newProgress": 50,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-欧洲-Ragnarok",
+      "oldProgress": 100,
+      "newProgress": 0,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-欧洲-Sagittarius",
+      "oldProgress": 100,
+      "newProgress": 37.5,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-欧洲-Spriggan",
+      "oldProgress": 100,
+      "newProgress": 25,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-欧洲-Alpha",
+      "oldProgress": 100,
+      "newProgress": 25,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-欧洲-Lich",
+      "oldProgress": 100,
+      "newProgress": 0,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-欧洲-Odin",
+      "oldProgress": 100,
+      "newProgress": 75,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-欧洲-Phoenix",
+      "oldProgress": 100,
+      "newProgress": 25,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-欧洲-Raiden",
+      "oldProgress": 100,
+      "newProgress": 50,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-欧洲-Shiva",
+      "oldProgress": 100,
+      "newProgress": 87.5,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-欧洲-Twintania",
+      "oldProgress": 100,
+      "newProgress": 62.5,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-欧洲-Zodiark",
+      "oldProgress": 100,
+      "newProgress": 75,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-大洋洲-Bismarck",
+      "oldProgress": 87.5,
+      "newProgress": 0,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-大洋洲-Ravana",
+      "oldProgress": 100,
+      "newProgress": 12.5,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-大洋洲-Sephirot",
+      "oldProgress": 87.5,
+      "newProgress": 12.5,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-大洋洲-Sophia",
+      "oldProgress": 87.5,
+      "newProgress": 12.5,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-大洋洲-Zurvan",
+      "oldProgress": 87.5,
+      "newProgress": 0,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-日本-Aegis",
+      "oldProgress": 100,
+      "newProgress": 37.5,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-日本-Atomos",
+      "oldProgress": 100,
+      "newProgress": 12.5,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-日本-Carbuncle",
+      "oldProgress": 100,
+      "newProgress": 25,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-日本-Garuda",
+      "oldProgress": 100,
+      "newProgress": 25,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-日本-Gungnir",
+      "oldProgress": 100,
+      "newProgress": 37.5,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-日本-Kujata",
+      "oldProgress": 100,
+      "newProgress": 50,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-日本-Tonberry",
+      "oldProgress": 100,
+      "newProgress": 25,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-日本-Typhon",
+      "oldProgress": 100,
+      "newProgress": 75,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-日本-Alexander",
+      "oldProgress": 100,
+      "newProgress": 62.5,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-日本-Bahamut",
+      "oldProgress": 100,
+      "newProgress": 75,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-日本-Durandal",
+      "oldProgress": 100,
+      "newProgress": 50,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-日本-Fenrir",
+      "oldProgress": 100,
+      "newProgress": 75,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-日本-Ifrit",
+      "oldProgress": 100,
+      "newProgress": 62.5,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-日本-Ridill",
+      "oldProgress": 100,
+      "newProgress": 37.5,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-日本-Tiamat",
+      "oldProgress": 100,
+      "newProgress": 75,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-日本-Ultima",
+      "oldProgress": 100,
+      "newProgress": 50,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-日本-Anima",
+      "oldProgress": 100,
+      "newProgress": 12.5,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-日本-Asura",
+      "oldProgress": 100,
+      "newProgress": 75,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-日本-Chocobo",
+      "oldProgress": 100,
+      "newProgress": 37.5,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-日本-Hades",
+      "oldProgress": 100,
+      "newProgress": 0,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-日本-Ixion",
+      "oldProgress": 100,
+      "newProgress": 12.5,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-日本-Masamune",
+      "oldProgress": 100,
+      "newProgress": 12.5,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-日本-Pandaemonium",
+      "oldProgress": 100,
+      "newProgress": 0,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-日本-Titan",
+      "oldProgress": 100,
+      "newProgress": 0,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-日本-Belias",
+      "oldProgress": 100,
+      "newProgress": 37.5,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-日本-Mandragora",
+      "oldProgress": 100,
+      "newProgress": 12.5,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-日本-Ramuh",
+      "oldProgress": 100,
+      "newProgress": 37.5,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-日本-Shinryu",
+      "oldProgress": 100,
+      "newProgress": 25,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-日本-Unicorn",
+      "oldProgress": 100,
+      "newProgress": 37.5,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-日本-Valefor",
+      "oldProgress": 100,
+      "newProgress": 50,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-日本-Yojimbo",
+      "oldProgress": 100,
+      "newProgress": 37.5,
+      "changeTime": "2026-02-02 04:47:30"
+    },
+    {
+      "serverId": "国际服-日本-Zeromus",
+      "oldProgress": 100,
+      "newProgress": 37.5,
+      "changeTime": "2026-02-02 04:47:30"
+    }
+  ]
+}
