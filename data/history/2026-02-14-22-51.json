@@ -2,7 +2,7 @@
   {
     "region": "陆行鸟",
     "server": "拉诺西亚",
-    "progress": 100,
+    "progress": 100.0,
     "level": 191,
     "lastUpdate": "2026-02-14 22:30:00",
     "source": "cn"
@@ -10,7 +10,7 @@
   {
     "region": "莫古力",
     "server": "神拳痕",
-    "progress": 25,
+    "progress": 25.0,
     "level": 156,
     "lastUpdate": "2026-02-14 22:30:00",
     "source": "cn"
@@ -34,7 +34,7 @@
   {
     "region": "莫古力",
     "server": "旅人栈桥",
-    "progress": 75,
+    "progress": 75.0,
     "level": 156,
     "lastUpdate": "2026-02-14 22:30:00",
     "source": "cn"
@@ -50,7 +50,7 @@
   {
     "region": "莫古力",
     "server": "龙巢神殿",
-    "progress": 75,
+    "progress": 75.0,
     "level": 156,
     "lastUpdate": "2026-02-14 22:30:00",
     "source": "cn"
@@ -58,7 +58,7 @@
   {
     "region": "莫古力",
     "server": "梦羽宝境",
-    "progress": 50,
+    "progress": 50.0,
     "level": 156,
     "lastUpdate": "2026-02-14 22:30:00",
     "source": "cn"
@@ -66,7 +66,7 @@
   {
     "region": "猫小胖",
     "server": "紫水栈桥",
-    "progress": 50,
+    "progress": 50.0,
     "level": 168,
     "lastUpdate": "2026-02-14 22:30:00",
     "source": "cn"
@@ -82,7 +82,7 @@
   {
     "region": "猫小胖",
     "server": "静语庄园",
-    "progress": 50,
+    "progress": 50.0,
     "level": 168,
     "lastUpdate": "2026-02-14 22:30:00",
     "source": "cn"
@@ -90,7 +90,7 @@
   {
     "region": "陆行鸟",
     "server": "幻影群岛",
-    "progress": 50,
+    "progress": 50.0,
     "level": 168,
     "lastUpdate": "2026-02-14 22:30:00",
     "source": "cn"
@@ -98,7 +98,7 @@
   {
     "region": "猫小胖",
     "server": "摩杜纳",
-    "progress": 75,
+    "progress": 75.0,
     "level": 160,
     "lastUpdate": "2026-02-14 22:30:00",
     "source": "cn"
@@ -122,7 +122,7 @@
   {
     "region": "猫小胖",
     "server": "琥珀原",
-    "progress": 25,
+    "progress": 25.0,
     "level": 168,
     "lastUpdate": "2026-02-14 22:30:00",
     "source": "cn"
@@ -154,7 +154,7 @@
   {
     "region": "豆豆柴",
     "server": "伊修加德",
-    "progress": 75,
+    "progress": 75.0,
     "level": 164,
     "lastUpdate": "2026-02-14 22:30:00",
     "source": "cn"
@@ -162,7 +162,7 @@
   {
     "region": "豆豆柴",
     "server": "红茶川",
-    "progress": 75,
+    "progress": 75.0,
     "level": 168,
     "lastUpdate": "2026-02-14 22:30:00",
     "source": "cn"
@@ -210,7 +210,7 @@
   {
     "region": "陆行鸟",
     "server": "晨曦王座",
-    "progress": 75,
+    "progress": 75.0,
     "level": 164,
     "lastUpdate": "2026-02-14 22:30:00",
     "source": "cn"
@@ -218,774 +218,9 @@
   {
     "region": "莫古力",
     "server": "潮风亭",
-    "progress": 75,
+    "progress": 75.0,
     "level": 156,
     "lastUpdate": "2026-02-14 22:30:00",
     "source": "cn"
-  },
-  {
-    "region": "国际服-北美",
-    "server": "Adamantoise",
-    "dc": "Aether",
-    "progress": 0,
-    "level": 23,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-北美",
-    "server": "Cactuar",
-    "dc": "Aether",
-    "progress": 25,
-    "level": 27,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-北美",
-    "server": "Faerie",
-    "dc": "Aether",
-    "progress": 87.5,
-    "level": 27,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-北美",
-    "server": "Gilgamesh",
-    "dc": "Aether",
-    "progress": 0,
-    "level": 23,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-北美",
-    "server": "Jenova",
-    "dc": "Aether",
-    "progress": 25,
-    "level": 23,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-北美",
-    "server": "Midgardsormr",
-    "dc": "Aether",
-    "progress": 37.5,
-    "level": 23,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-北美",
-    "server": "Sargatanas",
-    "dc": "Aether",
-    "progress": 12.5,
-    "level": 22,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-北美",
-    "server": "Siren",
-    "dc": "Aether",
-    "progress": 87.5,
-    "level": 18,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-北美",
-    "server": "Balmung",
-    "dc": "Crystal",
-    "progress": 75,
-    "level": 18,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-北美",
-    "server": "Brynhildr",
-    "dc": "Crystal",
-    "progress": 75,
-    "level": 16,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-北美",
-    "server": "Coeurl",
-    "dc": "Crystal",
-    "progress": 37.5,
-    "level": 16,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-北美",
-    "server": "Diabolos",
-    "dc": "Crystal",
-    "progress": 0,
-    "level": 18,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-北美",
-    "server": "Goblin",
-    "dc": "Crystal",
-    "progress": 0,
-    "level": 15,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-北美",
-    "server": "Malboro",
-    "dc": "Crystal",
-    "progress": 12.5,
-    "level": 16,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-北美",
-    "server": "Mateus",
-    "dc": "Crystal",
-    "progress": 37.5,
-    "level": 16,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-北美",
-    "server": "Zalera",
-    "dc": "Crystal",
-    "progress": 12.5,
-    "level": 16,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-北美",
-    "server": "Cuchulainn",
-    "dc": "Dynamis",
-    "progress": 0,
-    "level": 10,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-北美",
-    "server": "Golem",
-    "dc": "Dynamis",
-    "progress": 0,
-    "level": 12,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-北美",
-    "server": "Halicarnassus",
-    "dc": "Dynamis",
-    "progress": 12.5,
-    "level": 12,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-北美",
-    "server": "Kraken",
-    "dc": "Dynamis",
-    "progress": 0,
-    "level": 12,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-北美",
-    "server": "Maduin",
-    "dc": "Dynamis",
-    "progress": 0,
-    "level": 12,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-北美",
-    "server": "Marilith",
-    "dc": "Dynamis",
-    "progress": 0,
-    "level": 12,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-北美",
-    "server": "Rafflesia",
-    "dc": "Dynamis",
-    "progress": 0,
-    "level": 12,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-北美",
-    "server": "Seraph",
-    "dc": "Dynamis",
-    "progress": 0,
-    "level": 14,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-北美",
-    "server": "Behemoth",
-    "dc": "Primal",
-    "progress": 25,
-    "level": 20,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-北美",
-    "server": "Excalibur",
-    "dc": "Primal",
-    "progress": 37.5,
-    "level": 18,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-北美",
-    "server": "Exodus",
-    "dc": "Primal",
-    "progress": 75,
-    "level": 16,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-北美",
-    "server": "Famfrit",
-    "dc": "Primal",
-    "progress": 62.5,
-    "level": 18,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-北美",
-    "server": "Hyperion",
-    "dc": "Primal",
-    "progress": 37.5,
-    "level": 18,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-北美",
-    "server": "Lamia",
-    "dc": "Primal",
-    "progress": 37.5,
-    "level": 18,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-北美",
-    "server": "Leviathan",
-    "dc": "Primal",
-    "progress": 87.5,
-    "level": 20,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-北美",
-    "server": "Ultros",
-    "dc": "Primal",
-    "progress": 0,
-    "level": 16,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-欧洲",
-    "server": "Cerberus",
-    "dc": "Chaos",
-    "progress": 62.5,
-    "level": 18,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-欧洲",
-    "server": "Louisoix",
-    "dc": "Chaos",
-    "progress": 62.5,
-    "level": 14,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-欧洲",
-    "server": "Moogle",
-    "dc": "Chaos",
-    "progress": 25,
-    "level": 18,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-欧洲",
-    "server": "Omega",
-    "dc": "Chaos",
-    "progress": 75,
-    "level": 16,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-欧洲",
-    "server": "Phantom",
-    "dc": "Chaos",
-    "progress": 87.5,
-    "level": 12,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-欧洲",
-    "server": "Ragnarok",
-    "dc": "Chaos",
-    "progress": 25,
-    "level": 16,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-欧洲",
-    "server": "Sagittarius",
-    "dc": "Chaos",
-    "progress": 50,
-    "level": 12,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-欧洲",
-    "server": "Spriggan",
-    "dc": "Chaos",
-    "progress": 37.5,
-    "level": 16,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-欧洲",
-    "server": "Alpha",
-    "dc": "Light",
-    "progress": 62.5,
-    "level": 16,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-欧洲",
-    "server": "Lich",
-    "dc": "Light",
-    "progress": 25,
-    "level": 22,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-欧洲",
-    "server": "Odin",
-    "dc": "Light",
-    "progress": 75,
-    "level": 18,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-欧洲",
-    "server": "Phoenix",
-    "dc": "Light",
-    "progress": 75,
-    "level": 20,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-欧洲",
-    "server": "Raiden",
-    "dc": "Light",
-    "progress": 25,
-    "level": 18,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-欧洲",
-    "server": "Shiva",
-    "dc": "Light",
-    "progress": 0,
-    "level": 20,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-欧洲",
-    "server": "Twintania",
-    "dc": "Light",
-    "progress": 0,
-    "level": 18,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-欧洲",
-    "server": "Zodiark",
-    "dc": "Light",
-    "progress": 0,
-    "level": 18,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-大洋洲",
-    "server": "Bismarck",
-    "dc": "Materia",
-    "progress": 87.5,
-    "level": 10,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-大洋洲",
-    "server": "Ravana",
-    "dc": "Materia",
-    "progress": 25,
-    "level": 12,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-大洋洲",
-    "server": "Sephirot",
-    "dc": "Materia",
-    "progress": 0,
-    "level": 12,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-大洋洲",
-    "server": "Sophia",
-    "dc": "Materia",
-    "progress": 12.5,
-    "level": 12,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-大洋洲",
-    "server": "Zurvan",
-    "dc": "Materia",
-    "progress": 87.5,
-    "level": 10,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-日本",
-    "server": "Aegis",
-    "dc": "Elemental",
-    "progress": 12.5,
-    "level": 14,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-日本",
-    "server": "Atomos",
-    "dc": "Elemental",
-    "progress": 37.5,
-    "level": 12,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-日本",
-    "server": "Carbuncle",
-    "dc": "Elemental",
-    "progress": 62.5,
-    "level": 12,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-日本",
-    "server": "Garuda",
-    "dc": "Elemental",
-    "progress": 62.5,
-    "level": 12,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-日本",
-    "server": "Gungnir",
-    "dc": "Elemental",
-    "progress": 87.5,
-    "level": 12,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-日本",
-    "server": "Kujata",
-    "dc": "Elemental",
-    "progress": 25,
-    "level": 14,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-日本",
-    "server": "Tonberry",
-    "dc": "Elemental",
-    "progress": 12.5,
-    "level": 23,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-日本",
-    "server": "Typhon",
-    "dc": "Elemental",
-    "progress": 75,
-    "level": 14,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-日本",
-    "server": "Alexander",
-    "dc": "Gaia",
-    "progress": 25,
-    "level": 14,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-日本",
-    "server": "Bahamut",
-    "dc": "Gaia",
-    "progress": 12.5,
-    "level": 16,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-日本",
-    "server": "Durandal",
-    "dc": "Gaia",
-    "progress": 12.5,
-    "level": 14,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-日本",
-    "server": "Fenrir",
-    "dc": "Gaia",
-    "progress": 50,
-    "level": 14,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-日本",
-    "server": "Ifrit",
-    "dc": "Gaia",
-    "progress": 0,
-    "level": 14,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-日本",
-    "server": "Ridill",
-    "dc": "Gaia",
-    "progress": 75,
-    "level": 12,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-日本",
-    "server": "Tiamat",
-    "dc": "Gaia",
-    "progress": 75,
-    "level": 14,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-日本",
-    "server": "Ultima",
-    "dc": "Gaia",
-    "progress": 25,
-    "level": 14,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-日本",
-    "server": "Anima",
-    "dc": "Mana",
-    "progress": 87.5,
-    "level": 16,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-日本",
-    "server": "Asura",
-    "dc": "Mana",
-    "progress": 50,
-    "level": 14,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-日本",
-    "server": "Chocobo",
-    "dc": "Mana",
-    "progress": 87.5,
-    "level": 18,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-日本",
-    "server": "Hades",
-    "dc": "Mana",
-    "progress": 0,
-    "level": 18,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-日本",
-    "server": "Ixion",
-    "dc": "Mana",
-    "progress": 0,
-    "level": 18,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-日本",
-    "server": "Masamune",
-    "dc": "Mana",
-    "progress": 37.5,
-    "level": 18,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-日本",
-    "server": "Pandaemonium",
-    "dc": "Mana",
-    "progress": 0,
-    "level": 17,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-日本",
-    "server": "Titan",
-    "dc": "Mana",
-    "progress": 50,
-    "level": 16,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-日本",
-    "server": "Belias",
-    "dc": "Meteor",
-    "progress": 0,
-    "level": 14,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-日本",
-    "server": "Mandragora",
-    "dc": "Meteor",
-    "progress": 62.5,
-    "level": 12,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-日本",
-    "server": "Ramuh",
-    "dc": "Meteor",
-    "progress": 75,
-    "level": 12,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-日本",
-    "server": "Shinryu",
-    "dc": "Meteor",
-    "progress": 62.5,
-    "level": 12,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-日本",
-    "server": "Unicorn",
-    "dc": "Meteor",
-    "progress": 62.5,
-    "level": 12,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-日本",
-    "server": "Valefor",
-    "dc": "Meteor",
-    "progress": 0,
-    "level": 13,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-日本",
-    "server": "Yojimbo",
-    "dc": "Meteor",
-    "progress": 87.5,
-    "level": 12,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
-  },
-  {
-    "region": "国际服-日本",
-    "server": "Zeromus",
-    "dc": "Meteor",
-    "progress": 75,
-    "level": 12,
-    "lastUpdate": "2026-02-14 22:51:00",
-    "source": "na"
   }
 ]
